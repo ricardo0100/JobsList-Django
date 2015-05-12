@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import socket
+import dj_database_url
+from django.conf.global_settings import DATABASES
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -79,16 +81,7 @@ WSGI_APPLICATION = 'tarefas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ['OTES02_DB_ENGINE'],
-        'NAME': os.environ['OTES02_DB_NAME'],
-        'USER': os.environ['OTES02_DB_USER'],
-        'PASSWORD': os.environ['OTES02_DB_PASSWORD'],
-        'HOST': os.environ['OTES02_DB_HOST'],
-    }
-}
-
+DATABASES['default'] = dj_database_url.config()
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
