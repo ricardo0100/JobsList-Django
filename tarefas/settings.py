@@ -76,8 +76,11 @@ WSGI_APPLICATION = 'tarefas.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ['OTES02_DB_ENGINE'],
+        'NAME': os.environ['OTES02_DB_NAME'],
+        'USER': os.environ['OTES02_DB_USER'],
+        'PASSWORD': os.environ['OTES02_DB_PASSWORD'],
+        'HOST': os.environ['OTES02_DB_HOST'],
     }
 }
 
