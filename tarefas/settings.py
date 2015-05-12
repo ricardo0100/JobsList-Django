@@ -30,7 +30,7 @@ SECRET_KEY = 'ezlc#4h1@**j6qzt%_62ff=qblti^)o-5@ghr_)vwea(y1&+j^'
 if socket.gethostname() == 'MacBook-Air-de-Ricardo.local':
     DEBUG = True
 else:
-    DEBUG = False
+    DEBUG = True
 
 ALLOWED_HOSTS = []
 
