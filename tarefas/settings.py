@@ -16,7 +16,7 @@ import socket
 import dj_database_url
 from django.conf.global_settings import DATABASES
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
