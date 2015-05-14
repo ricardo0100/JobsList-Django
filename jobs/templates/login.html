@@ -1,0 +1,11 @@
+{% extends "template_geral.html" %}
+
+{% block conteudo %}
+    <div class="container-fluid">
+        <form id="{{ form.auto_id }}" action="{% url 'login' %}" method="post">
+            {{ form.email }}
+            {{ form.senha }}
+        </form>
+    </div>
+
+{% endblock %}
