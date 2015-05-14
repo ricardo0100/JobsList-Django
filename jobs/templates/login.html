@@ -18,15 +18,8 @@
             {{ form.senha|add_class:"form-control"|add_placeholder:form.senha.label }}
             {{ form.senha.errors|safe }}
 
-            <div class="checkbox">
-                <label>
-                    {{ form.sempre_logado }} {{ form.sempre_logado.label }}
-                </label>
-            </div>
-
             <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
         </form>
     </div>
 
 {% endblock %}
-s
