@@ -1,11 +1,14 @@
 {% load staticfiles %}
+
+
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Lista de tarefas OTES02</title>
+		<title>{% block title %}{% endblock %}</title>
 		<meta charset="UTF-8">
 
 		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-3.3.4-dist/css/bootstrap.min.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
 {#        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-3.3.4-dist/css/bootstrap-theme.min.css' %}" />#}
 		<script src="{% static 'bootstrap-3.3.4-dist/js/bootstrap.min.js' %}"></script>
 
