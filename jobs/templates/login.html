@@ -10,10 +10,13 @@
 
     <div class="container-fluid">
         <form id="{{ form.auto_id }}" class="form-signin" action="{% url 'login' %}" method="post">
+
             <h2 class="form-signin-heading">Login</h2>
 
             {{ form.email|add_class:"form-control"|add_placeholder:form.email.label }}
+            {{ form.email.errors|safe }}
             {{ form.senha|add_class:"form-control"|add_placeholder:form.senha.label }}
+            {{ form.senha.errors|safe }}
 
             <div class="checkbox">
                 <label>

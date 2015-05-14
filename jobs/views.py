@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from jobs.forms import LoginForm
+from jobs.template_snippets import CustomFormErrorList
 
 
 @login_required(login_url='/login')
@@ -14,7 +15,14 @@ def index(request):
 
 
 def login(request):
-    form = LoginForm()
+
+    if request.method == 'POST':
+        form = LoginForm(request.POST, error_class=CustomFormErrorList)
+        if form.is_valid():
+            pass
+    else:
+        form = LoginForm(error_class=CustomFormErrorList)
+
     template = loader.get_template('login.html')
     context = RequestContext(request, {
         "form": form
