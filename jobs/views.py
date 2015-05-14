@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from jobs.forms import LoginForm
@@ -19,7 +20,8 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST, error_class=CustomFormErrorList)
         if form.is_valid():
-            pass
+            username = User.objects.filter(email=form.cleaned_data['email'])
+            password = form
     else:
         form = LoginForm(error_class=CustomFormErrorList)
 
