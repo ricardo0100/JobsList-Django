@@ -13,6 +13,8 @@
 
             <h2 class="form-signin-heading">Login</h2>
 
+            {{ form.non_field_errors|safe }}
+
             {{ form.email|add_class:"form-control"|add_placeholder:form.email.label }}
             {{ form.email.errors|safe }}
             {{ form.senha|add_class:"form-control"|add_placeholder:form.senha.label }}
@@ -21,7 +23,7 @@
             <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
             <a class="btn btn-success btn-lg btn-block" href="{% url "cadastro" %}">Novo usuário</a>
         </form>
-
+        {% if mostrar_mensagem_logout %}<h4 class="text-danger text-center">Logout efetuado com sucesso</h4>{% endif %}
     </div>
 
 {% endblock %}
