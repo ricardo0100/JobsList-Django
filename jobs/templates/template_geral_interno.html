@@ -1,0 +1,32 @@
+{% extends 'template_geral.html' %}
+
+
+{% block conteudo %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">OTES-02 Exercício</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}"><span class="glyphicon glyphicon-tree-deciduous"></span></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+{#                    <li id="menu-index"><a href="listagem.php">Listagem</a></li>#}
+{#                    <li id="menu-cadastro"><a href="cadastro-de-imagem.php">Cadastro de imagens</a></li>#}
+{#                    <li id="menu-sobre"><a href="sobre.php">Sobre</a></li>#}
+                </ul>
+                <ul class="nav navbar-nav" style="float:right">
+                    <li id="menu-logout"><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid conteudo_interno">
+        {% block conteudo_interno %}{% endblock %}
+    </div>
+{% endblock %}

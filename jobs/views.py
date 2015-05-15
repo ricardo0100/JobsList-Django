@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect
 from django.template import RequestContext, loader
-from jobs.forms import LoginForm
+from jobs.forms import LoginForm, CadastroUsuarioForm
 from jobs.template_snippets import CustomFormErrorList
 
 
@@ -19,7 +19,6 @@ def index(request):
 
 
 def login(request):
-
     if request.method == 'POST':
         form = LoginForm(request.POST, error_class=CustomFormErrorList)
         if form.is_valid():
@@ -41,17 +40,30 @@ def login(request):
     else:
         form = LoginForm(error_class=CustomFormErrorList)
 
-    template = loader.get_template('login.html')
+    template = loader.get_template('autenticacao/login.html')
     context = RequestContext(request, {
-        "form": form
+        'form': form
     })
     return HttpResponse(template.render(context))
 
 
 def logout(request):
     django.contrib.auth.logout(request)
-    template = loader.get_template('logout.html')
+    template = loader.get_template('autenticacao/logout.html')
     context = RequestContext(request, {
 
+    })
+    return HttpResponse(template.render(context))
+
+
+def cadastro(request):
+    if request.method == 'POST':
+        form = CadastroUsuarioForm(request.POST)
+    else:
+        form = CadastroUsuarioForm()
+
+    template = loader.get_template('autenticacao/cadastro.html')
+    context = RequestContext(request, {
+        'form': form
     })
     return HttpResponse(template.render(context))

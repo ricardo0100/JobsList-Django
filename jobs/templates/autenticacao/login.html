@@ -19,7 +19,9 @@
             {{ form.senha.errors|safe }}
 
             <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+            <a class="btn btn-success btn-lg btn-block" href="{% url "cadastro" %}">Novo usuário</a>
         </form>
+
     </div>
 
 {% endblock %}

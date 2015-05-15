@@ -2,7 +2,7 @@
 .form-signin {
   max-width: 330px;
   padding: 15px;
-  margin: 0 auto;
+  margin: 40px auto 10px auto;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
@@ -34,5 +34,8 @@
     border-top-right-radius: 0;
 }
 .form-signin button[type="submit"] {
-    margin-top: 20px;
+    margin: 20px 0;
+}
+.conteudo_interno {
+    margin-top: 60px;
 }
