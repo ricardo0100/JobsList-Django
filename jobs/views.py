@@ -61,13 +61,21 @@ def cadastro(request):
             nome = form.cleaned_data['nome']
             email = form.cleaned_data['email']
             senha = form.cleaned_data['senha']
-
             confirmacao_senha = form.cleaned_data['confirmacao_senha']
 
-            user = User.objects.create_user(nome, email, senha)
-            user.save()
+            if not User.objects.filter(email=email).exists():
+                if senha == confirmacao_senha:
+                    user = User.objects.create_user(nome, email, senha)
+                    if user:
+                        user.save()
+                        return login(request)
+                    else:
+                        form.add_error(None, 'Erro ao criar usuário')
+                else:
+                    form.add_error(None, 'Confira sua senha e confirmação de senha')
+            else:
+                form.add_error('email', 'E-mail já cadastrado')
 
-            return login(request)
 
     else:
         form = CadastroUsuarioForm()

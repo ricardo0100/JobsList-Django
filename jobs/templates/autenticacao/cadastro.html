@@ -13,6 +13,8 @@
 
             <h2 class="form-signin-heading">Novo usuário</h2>
 
+            {{ form.non_field_errors|safe }}
+
             {{ form.nome|add_class:"form-control"|add_placeholder:form.nome.label }}
             {{ form.nome.errors|safe }}
             {{ form.email|add_class:"form-control"|add_placeholder:form.email.label }}

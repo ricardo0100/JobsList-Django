@@ -23,6 +23,9 @@
 .form-signin .form-control:focus {
   z-index: 2;
 }
+.form-signin .errorlist {
+    margin-bottom: 20px;
+}
 .form-signin input[type="email"] {
     margin-top: 20px;
   border-bottom-right-radius: 0;
