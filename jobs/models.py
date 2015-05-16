@@ -2,6 +2,9 @@ import datetime
 from django.db import models
 
 class ModelBase(models.Model):
+    created = models.DateTimeField(editable=False)
+    modified = models.DateTimeField()
+
     class Meta:
         abstract = True
 
@@ -14,10 +17,7 @@ class ModelBase(models.Model):
 
 class Job(ModelBase):
     titulo = models.CharField(max_length=100)
-    alarme = models
-
-    created = models.DateTimeField(editable=False)
-    modified = models.DateTimeField()
+    descricao = models.TextField()
 
 
 class Alarme(ModelBase):
@@ -27,6 +27,6 @@ class Alarme(ModelBase):
         ('notificacao', 'Notificação Push'),
     )
     tipo = models.CharField(choices=TIPOS_ALARME, max_length=10)
-    alarme = models.ForeignKey(Job)
+    job = models.ForeignKey(Job)
     horario = models.DateTimeField()
     ativo = models.BooleanField()
