@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     # 'polls',
     'jobs',
+    'django_ajax',
 )
 
 MIDDLEWARE_CLASSES = (

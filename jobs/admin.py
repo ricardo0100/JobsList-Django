@@ -1,3 +1,5 @@
 from django.contrib import admin
+from jobs.models import Job, Alarme
 
-# Register your models here.
+admin.site.register(Job)
+admin.site.register(Alarme)

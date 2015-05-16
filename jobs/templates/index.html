@@ -1,11 +1,35 @@
 {% extends "template_geral_interno.html" %}
 
+{% block js %}
+    <script type="text/javascript">
+        function modal_nova_tarefa() {
+            ajaxGet('/ajax/cadastro-jobs/',null, function (content) {
+                var modalCadastro = $('#modal');
+                modalCadastro.html(content);
+                modalCadastro.modal('show', function (event) {
+
+                });
+            }, null);
+        }
+    </script>
+{% endblock %}
+
 {% block conteudo_interno %}
+    <div id="sem-jobs" class="container-fluid text-center">
+        <h1>
+            <span class="glyphicon glyphicon-pawn text-danger" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-knight text-warning" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-queen text-primary" aria-hidden="true"></span>
+        </h1>
 
+        <h3 class="text-muted">Você não possui nenhuma tarefa</h3>
 
-        sdsds
+        <button class="btn btn-lg btn-primary" onclick="modal_nova_tarefa()">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cria nova tarefa
+        </button>
+    </div>
 
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 
-
-
+    </div>
 {% endblock %}
