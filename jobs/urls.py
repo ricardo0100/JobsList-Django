@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^login/', views.login, name='login'),
     url(r'^logout/', views.logout, name='logout'),
     url(r'^cadastro/', views.cadastro, name='cadastro'),
-    url(r'^ajax/cadastro-jobs/', ajax.cadastro_jobs, name='cadastro_jobs'),
+    url(r'^ajax/cadastro-jobs/', ajax.nova_tarefa, name='cadastro_jobs'),
 ]

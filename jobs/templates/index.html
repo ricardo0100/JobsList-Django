@@ -3,7 +3,7 @@
 {% block js %}
     <script type="text/javascript">
         function modal_nova_tarefa() {
-            ajaxGet('/ajax/cadastro-jobs/',null, function (content) {
+            ajaxGet('/ajax/cadastro-jobs/', null, function (content) {
                 var modalCadastro = $('#modal');
                 modalCadastro.html(content);
                 modalCadastro.modal('show', function (event) {
