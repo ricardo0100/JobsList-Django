@@ -28,6 +28,7 @@ def login(request, mostrar_mensagem_logout=False):
                 password = form.cleaned_data['senha']
 
                 user = authenticate(username=username, password=password)
+
                 if user is not None:
                     if user.is_active:
                         django.contrib.auth.login(request, user)
@@ -57,15 +58,21 @@ def logout(request):
 def cadastro(request):
     if request.method == 'POST':
         form = CadastroUsuarioForm(request.POST)
+
         if form.is_valid():
             nome = form.cleaned_data['nome']
             email = form.cleaned_data['email']
             senha = form.cleaned_data['senha']
             confirmacao_senha = form.cleaned_data['confirmacao_senha']
 
+            import re
+            username = " ".join(re.findall("[a-zA-Z0-9]+", email)).replace(" ", "")[:30]
+
             if not User.objects.filter(email=email).exists():
                 if senha == confirmacao_senha:
-                    user = User.objects.create_user(nome, email, senha)
+                    user = User.objects.create_user(username, email, senha)
+                    user.first_name = nome
+                    user.save()
                     if user:
                         user.save()
                         return login(request)
@@ -75,8 +82,6 @@ def cadastro(request):
                     form.add_error(None, 'Confira sua senha e confirmação de senha')
             else:
                 form.add_error('email', 'E-mail já cadastrado')
-
-
     else:
         form = CadastroUsuarioForm()
 

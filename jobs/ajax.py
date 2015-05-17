@@ -4,6 +4,7 @@ from django.template import loader
 from django.template import RequestContext
 from django_ajax.decorators import ajax
 from jobs.forms import NovaTarefaForm
+from jobs.models import Tarefa
 
 
 @ajax
@@ -12,7 +13,10 @@ def nova_tarefa(request):
     if request.method == 'POST':
         form = NovaTarefaForm(request.POST)
         if form.is_valid():
-            pass
+            titulo = form.cleaned_data['titulo']
+            descricao = form.cleaned_data['descricao']
+            Tarefa.objects.create(titulo=titulo, descricao=descricao)
+
     else:
         form = NovaTarefaForm()
 

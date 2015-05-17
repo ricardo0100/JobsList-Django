@@ -13,10 +13,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Alarme',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('created', models.DateTimeField(editable=False)),
                 ('modified', models.DateTimeField()),
-                ('tipo', models.CharField(max_length=10, choices=[('email', 'E-mail'), ('sms', 'SMS'), ('notificacao', 'Notificação Push')])),
+                ('tipo', models.CharField(choices=[('email', 'E-mail'), ('sms', 'SMS'), ('notificacao', 'Notificação Push')], max_length=10)),
                 ('horario', models.DateTimeField()),
                 ('ativo', models.BooleanField()),
             ],
@@ -25,9 +25,9 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Job',
+            name='Tarefa',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('created', models.DateTimeField(editable=False)),
                 ('modified', models.DateTimeField()),
                 ('titulo', models.CharField(max_length=100)),
@@ -40,6 +40,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='alarme',
             name='job',
-            field=models.ForeignKey(to='jobs.Job'),
+            field=models.ForeignKey(to='jobs.Tarefa'),
         ),
     ]

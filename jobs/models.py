@@ -15,7 +15,7 @@ class ModelBase(models.Model):
         return super(ModelBase, self).save(*args, **kwargs)
 
 
-class Job(ModelBase):
+class Tarefa(ModelBase):
     titulo = models.CharField(max_length=100)
     descricao = models.TextField()
 
@@ -27,6 +27,6 @@ class Alarme(ModelBase):
         ('notificacao', 'Notificação Push'),
     )
     tipo = models.CharField(choices=TIPOS_ALARME, max_length=10)
-    job = models.ForeignKey(Job)
+    job = models.ForeignKey(Tarefa)
     horario = models.DateTimeField()
     ativo = models.BooleanField()
