@@ -3,7 +3,7 @@
 {% block js %}
     <script type="text/javascript">
         function modal_nova_tarefa() {
-            var url = '/ajax/cadastro-jobs/';
+            var url = '/ajax/cadastro-jobs/';//TODO URL
             $.ajax({
                 url: url
             }).done(function(data) {
@@ -16,18 +16,39 @@
 {% endblock %}
 
 {% block conteudo_interno %}
-    <div id="sem-jobs" class="container-fluid text-center">
-        <h1>
-            <span class="glyphicon glyphicon-pawn text-danger" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-knight text-warning" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-queen text-primary" aria-hidden="true"></span>
-        </h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="tarefas">
+                {% for tarefa in tarefas %}
+                    {% if forloop.first %}
+                        <div class="list-group">
+                    {% endif %}
+                    <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ tarefa.titulo }}</h4>
+                        <p class="list-group-item-text">9 de maio de 2015</p>
+                    </a>
 
-        <h3 class="text-muted">Você não possui nenhuma tarefa</h3>
+                    {% empty %}
 
-        <button class="btn btn-lg btn-primary" onclick="modal_nova_tarefa()">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cria nova tarefa
-        </button>
+                    <div id="sem-tarefas" class="text-center">
+                        <h1>
+                            <span class="glyphicon glyphicon-pawn text-danger" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-knight text-warning" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-queen text-primary" aria-hidden="true"></span>
+                        </h1>
+
+                        <h3 class="text-muted">Você não possui nenhuma tarefa</h3>
+
+                        <button class="btn btn-lg btn-primary" onclick="modal_nova_tarefa()">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cria nova tarefa
+                        </button>
+                    </div>
+                    {% if forloop.last %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">

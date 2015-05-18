@@ -6,13 +6,16 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import RequestContext, loader
 from jobs.forms import LoginForm, CadastroUsuarioForm
+from jobs.models import Tarefa
 
 
 @login_required(login_url='/login')
 def index(request):
+    tarefas = Tarefa.objects.all()
+
     template = loader.get_template('index.html')
     context = RequestContext(request, {
-
+        'tarefas': tarefas
     })
     return HttpResponse(template.render(context))
 
