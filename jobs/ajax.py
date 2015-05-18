@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
 from django.template import RequestContext
 from django_ajax.decorators import ajax
@@ -16,7 +17,7 @@ def nova_tarefa(request):
             titulo = form.cleaned_data['titulo']
             descricao = form.cleaned_data['descricao']
             Tarefa.objects.create(titulo=titulo, descricao=descricao)
-
+            return redirect('/')
     else:
         form = NovaTarefaForm()
 

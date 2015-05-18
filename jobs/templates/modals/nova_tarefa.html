@@ -5,10 +5,19 @@
 <script type="text/javascript">
     function salvarNovaTarefa() {
         var dados = $('#form-nova-tarefa').serialize();
-        ajaxPost('/ajax/cadastro-jobs/', dados, function (content) {
-            var modalCadastro = $('#modal');
-            modalCadastro.html(content);
-        }, null);
+        var url = '/ajax/cadastro-jobs/';
+        $.ajax({
+            url: url,
+            data: dados,
+            method: 'POST'
+        }).done(function(data) {
+            if(data.status == 302) {
+                document.location.href = data.content;
+            }else {
+                var modalCadastro = $('#modal');
+                modalCadastro.html(data.content);
+            }
+        });
     }
 </script>
 

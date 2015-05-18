@@ -32,7 +32,7 @@ def login(request, mostrar_mensagem_logout=False):
                 if user is not None:
                     if user.is_active:
                         django.contrib.auth.login(request, user)
-                        return redirect("/")
+                        return redirect('/')
                     else:
                         form.add_error(None, 'Usuário inativo')
                 else:
@@ -66,7 +66,7 @@ def cadastro(request):
             confirmacao_senha = form.cleaned_data['confirmacao_senha']
 
             import re
-            username = " ".join(re.findall("[a-zA-Z0-9]+", email)).replace(" ", "")[:30]
+            username = ' '.join(re.findall("[a-zA-Z0-9]+", email)).replace(' ', '')[:30]
 
             if not User.objects.filter(email=email).exists():
                 if senha == confirmacao_senha:

@@ -3,13 +3,14 @@
 {% block js %}
     <script type="text/javascript">
         function modal_nova_tarefa() {
-            ajaxGet('/ajax/cadastro-jobs/', null, function (content) {
+            var url = '/ajax/cadastro-jobs/';
+            $.ajax({
+                url: url
+            }).done(function(data) {
                 var modalCadastro = $('#modal');
-                modalCadastro.html(content);
-                modalCadastro.modal('show', function (event) {
-
-                });
-            }, null);
+                modalCadastro.html(data.content);
+                modalCadastro.modal('show');
+            });
         }
     </script>
 {% endblock %}
