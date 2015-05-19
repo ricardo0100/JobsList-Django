@@ -19,7 +19,7 @@ from django.conf.global_settings import DATABASES
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-# Quick-start development settings - unsuitable for production
+# Quick-start development main - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -60,7 +60,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'tarefas.urls'
+ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
     {
@@ -78,11 +78,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tarefas.wsgi.application'
+WSGI_APPLICATION = 'main.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.8/ref/main/#databases
 
 DATABASES['default'] = dj_database_url.config()
 
