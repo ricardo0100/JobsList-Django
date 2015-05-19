@@ -15,35 +15,37 @@
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
                 <ul class="nav navbar-nav navbar-left">
                     <li class="active"><a href="#">Todas<span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Atrasadas</a></li>
-                    <li><a href="#">Concluídas</a></li>
-                    <li><a href="#">Para hoje</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ordenar por <span class="text-primary">data de conclusão</span><span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Data de conclusão</a></li>
-                            <li><a href="#">Data de criação</a></li>
-                            <li><a href="#">Nome da tarefa</a></li>
-                        </ul>
-                    </li>
+
+{#                    <li><a href="#">Atrasadas</a></li>#}
+{#                    <li><a href="#">Concluídas</a></li>#}
+{#                    <li><a href="#">Para hoje</a></li>#}
+{#                    <li class="dropdown">#}
+{#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ordenar por <span class="text-primary">data de conclusão</span><span class="caret"></span></a>#}
+{#                        <ul class="dropdown-menu" role="menu">#}
+{#                            <li><a href="#">Data de conclusão</a></li>#}
+{#                            <li><a href="#">Data de criação</a></li>#}
+{#                            <li><a href="#">Nome da tarefa</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
                 </ul>
 
-                <form class="navbar-form navbar-right" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Buscar tarefa">
-                    </div>
-                    <button type="submit" class="btn btn-default">Buscar</button>
-                </form>
 
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
 
-                <button type="button" class="btn btn-primary navbar-btn" onclick="modal_nova_tarefa()">Nova tarefa</button>
+{#                <form class="navbar-form navbar-right" role="search">#}
+{#                    <div class="form-group">#}
+{#                        <input type="text" class="form-control" placeholder="Buscar tarefa">#}
+{#                    </div>#}
+{#                    <button type="submit" class="btn btn-default">Buscar</button>#}
+{#                </form>#}
 
+                <button id="btn-nova-tarefa" type="button" class="btn btn-primary navbar-btn" onclick="modal_nova_tarefa()">Nova tarefa</button>
 
             </div>
-
         </div>
     </nav>
 
