@@ -16,6 +16,9 @@ class ModelBase(models.Model):
 
 
 class Tarefa(ModelBase):
+    def __str__(self):
+        return self.titulo
+
     titulo = models.CharField(max_length=100)
     descricao = models.TextField()
 
