@@ -15,7 +15,7 @@ def index(request):
 
     template = loader.get_template('index.html')
     context = RequestContext(request, {
-        'main': tarefas
+        'tarefas': tarefas
     })
     return HttpResponse(template.render(context))
 

@@ -5,7 +5,7 @@
 <script type="text/javascript">
     function salvarNovaTarefa() {
         var dados = $('#form-nova-tarefa').serialize();
-        var url = '/ajax/cadastro-jobs/';
+        var url = '{% url 'cadastro_jobs' %}';
         $.ajax({
             url: url,
             data: dados,
