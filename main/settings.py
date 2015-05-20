@@ -86,6 +86,10 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES['default'] = dj_database_url.config()
 
+DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+DATABASES['default']['NAME'] = 'test_database'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

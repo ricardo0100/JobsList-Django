@@ -1,3 +1,7 @@
 from django.test import TestCase
 
-# Create your tests here.
+
+class TestJobs(TestCase):
+
+    def test_adicionar_tarefa(self):
+        self.assertTrue(True)
