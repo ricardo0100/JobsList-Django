@@ -4,19 +4,16 @@
 #menu #btn-nova-tarefa {
   margin-left: 10px;
 }
-.form-signin {
+.form-padrao {
   max-width: 330px;
   padding: 15px;
   margin: 40px auto 10px auto;
 }
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
+.form-padrao .form-padrao-heading .checkbox {
   margin-bottom: 10px;
-}
-.form-signin .checkbox {
   font-weight: normal;
 }
-.form-signin .form-control {
+.form-padrao .form-control {
   position: relative;
   height: auto;
   -webkit-box-sizing: border-box;
@@ -25,24 +22,20 @@
   padding: 10px;
   font-size: 16px;
 }
-.form-signin .form-control:focus {
+.form-padrao .form-control:focus {
   z-index: 2;
 }
-.form-signin .errorlist {
+.form-padrao .errorlist {
   margin-bottom: 20px;
 }
-.form-signin input[type="email"] {
+.form-padrao button[type="submit"] {
+  margin-top: 20px;
+}
+.form-padrao input[type="email"],
+.form-padrao input[type="password"] {
   margin-top: 20px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-top: 20px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-.form-signin button[type="submit"] {
-  margin: 20px 0;
 }
 #tarefas {
   padding: 20px;

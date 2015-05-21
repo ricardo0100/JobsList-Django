@@ -9,9 +9,9 @@
 {% block conteudo %}
 
     <div class="container-fluid">
-        <form id="{{ form.auto_id }}" class="form-signin" action="{% url 'login' %}" method="post">
+        <form id="{{ form.auto_id }}" class="form-padrao" action="{% url 'login' %}" method="post">
 
-            <h2 class="form-signin-heading">Login</h2>
+            <h2 class="form-padrao-heading">Login</h2>
 
             {{ form.non_field_errors|safe }}
 
@@ -22,8 +22,11 @@
 
             <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
             <a class="btn btn-success btn-lg btn-block" href="{% url "cadastro" %}">Novo usuário</a>
+
         </form>
-        {% if mostrar_mensagem_logout %}<h4 class="text-danger text-center">Logout efetuado com sucesso</h4>{% endif %}
+        {% if mostrar_mensagem_logout %}
+            <h4 class="text-danger text-center">Logout efetuado com sucesso</h4>
+        {% endif %}
     </div>
 
 {% endblock %}
