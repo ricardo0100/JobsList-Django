@@ -1,0 +1,37 @@
+<script type="text/javascript">
+    function excluir_tarefa(id_tarefa) {
+        var url = '{% url 'excluir_tarefa' %}';
+        var data = {
+            'id_tarefa': id_tarefa
+        };
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'POST'
+        }).done(function(data) {
+            if(data.status == 302) {
+                document.location.href = data.content;
+            }
+        });
+    }
+</script>
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Confirmar exclusão?</h4>
+        </div>
+
+        <div class="modal-body">
+            <p>Tem certeza que deseja exluir a tarefa?</p>
+            <p class="text-muted">{{ tarefa.titulo }}</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-default btn-danger" onclick="excluir_tarefa({{ tarefa.id }})">Excluir</button>
+        </div>
+
+    </div>
+</div>

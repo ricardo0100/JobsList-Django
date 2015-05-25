@@ -3,13 +3,28 @@
 {% block js %}
     <script type="text/javascript">
         function modal_nova_tarefa() {
-            var url = '/ajax/cadastro-jobs/';//TODO URL
+            var url = '{% url 'cadastro_jobs' %}';
             $.ajax({
                 url: url
             }).done(function(data) {
                 var modalCadastro = $('#modal');
                 modalCadastro.html(data.content);
                 modalCadastro.modal('show');
+            });
+        }
+
+        function modal_excluir_tarefa(id_tarefa) {
+            var url = '{% url 'confirmacao_exclusao_tarefa' %}';
+            var data = {
+                'id_tarefa': id_tarefa
+            };
+            $.ajax({
+                url: url,
+                data: data,
+            }).done(function(data) {
+                var modalConfirmacaoExclusaoTarefa = $('#modal');
+                modalConfirmacaoExclusaoTarefa.html(data.content);
+                modalConfirmacaoExclusaoTarefa.modal('show');
             });
         }
     </script>
@@ -32,7 +47,7 @@
                                 <p class="list-group-item-text">9 de maio de 2015</p>
                             </div>
                             <div class="col-md-2 tarefas-actions">
-                                <button type="button" class="btn btn-default pull-right" aria-label="Excluir">
+                                <button type="button" class="btn btn-default pull-right" aria-label="Excluir" onclick="modal_excluir_tarefa({{ tarefa.id }})">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </button>
 

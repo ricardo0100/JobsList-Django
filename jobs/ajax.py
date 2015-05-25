@@ -26,3 +26,21 @@ def nova_tarefa(request):
         'form': form
     })
     return HttpResponse(template.render(context))
+
+
+@ajax
+@login_required
+def excluir_tarefa(request):
+    if request.method == 'POST':
+        id_tarefa = request.POST['id_tarefa']
+        tarefa = Tarefa.objects.get(id=id_tarefa)
+        tarefa.delete()
+        return redirect('/')
+    else:
+        id_tarefa = request.GET['id_tarefa']
+        tarefa = Tarefa.objects.get(id=id_tarefa)
+        template = loader.get_template('modals/excluir_tarefa.html')
+        context = RequestContext(request, {
+            'tarefa': tarefa
+        })
+        return HttpResponse(template.render(context))
