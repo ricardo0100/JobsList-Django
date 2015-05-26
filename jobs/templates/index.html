@@ -13,6 +13,19 @@
             });
         }
 
+        function modal_editar_tarefa(id_tarefa) {
+            var url = '{% url 'editar_jobs' 0 %}';
+            url = url.replace('/0/', '/' + id_tarefa + '/');
+
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                var modalCadastro = $('#modal');
+                modalCadastro.html(data.content);
+                modalCadastro.modal('show');
+            });
+        }
+
         function modal_excluir_tarefa(id_tarefa) {
             var url = '{% url 'confirmacao_exclusao_tarefa' %}';
             var data = {
@@ -51,7 +64,7 @@
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </button>
 
-                                <button type="button" class="btn btn-default pull-right" aria-label="Editar">
+                                <button type="button" class="btn btn-default pull-right" aria-label="Editar" onclick="modal_editar_tarefa({{ tarefa.id }})">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </button>
                             </div>

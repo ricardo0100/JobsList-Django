@@ -10,20 +10,34 @@ from jobs.models import Tarefa
 
 @ajax
 @login_required
-def nova_tarefa(request):
+def nova_tarefa(request, id_tarefa=None):
+    tarefa = None
+    if id_tarefa:
+        tarefa = Tarefa.objects.get(id=id_tarefa)
+        if not request.method == 'POST':
+            form = NovaTarefaForm(initial={
+                'titulo': tarefa.titulo,
+                'descricao': tarefa.descricao,
+            })
+    else:
+        form = NovaTarefaForm()
+
     if request.method == 'POST':
         form = NovaTarefaForm(request.POST)
         if form.is_valid():
             titulo = form.cleaned_data['titulo']
             descricao = form.cleaned_data['descricao']
-            Tarefa.objects.create(titulo=titulo, descricao=descricao)
+            if not tarefa:
+                tarefa = Tarefa()
+            tarefa.titulo = titulo
+            tarefa.descricao = descricao
+            tarefa.save()
             return redirect('/')
-    else:
-        form = NovaTarefaForm()
 
     template = loader.get_template('modals/nova_tarefa.html')
     context = RequestContext(request, {
-        'form': form
+        'form': form,
+        'tarefa': tarefa,
     })
     return HttpResponse(template.render(context))
 
