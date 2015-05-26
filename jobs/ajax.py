@@ -9,7 +9,7 @@ from jobs.models import Tarefa
 
 
 @ajax
-@login_required
+@login_required(login_url='/login')
 def nova_tarefa(request, id_tarefa=None):
     tarefa = None
     if id_tarefa:
@@ -29,6 +29,7 @@ def nova_tarefa(request, id_tarefa=None):
             descricao = form.cleaned_data['descricao']
             if not tarefa:
                 tarefa = Tarefa()
+                tarefa.usuario = request.user
             tarefa.titulo = titulo
             tarefa.descricao = descricao
             tarefa.save()
@@ -43,7 +44,7 @@ def nova_tarefa(request, id_tarefa=None):
 
 
 @ajax
-@login_required
+@login_required(login_url='/login')
 def excluir_tarefa(request):
     if request.method == 'POST':
         id_tarefa = request.POST['id_tarefa']

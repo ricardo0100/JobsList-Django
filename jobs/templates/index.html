@@ -44,56 +44,54 @@
 {% endblock %}
 
 {% block conteudo_interno %}
-    <div class="row">
+    <div class="row" id="tarefas">
         <div class="col-md-12">
-            <div id="tarefas">
-                {% for tarefa in tarefas %}
+            {% for tarefa in tarefas %}
 
-                    {% if forloop.first %}
-                        <div class="list-group">
-                    {% endif %}
+                {% if forloop.first %}
+                    <div class="list-group">
+                {% endif %}
 
-                    <div class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <h4 class="list-group-item-heading">{{ tarefa.titulo }}</h4>
-                                <p class="list-group-item-text">9 de maio de 2015</p>
-                            </div>
-                            <div class="col-md-2 tarefas-actions">
-                                <button type="button" class="btn btn-default pull-right" aria-label="Excluir" onclick="modal_excluir_tarefa({{ tarefa.id }})">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button>
-
-                                <button type="button" class="btn btn-default pull-right" aria-label="Editar" onclick="modal_editar_tarefa({{ tarefa.id }})">
-                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                </button>
-                            </div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h4 class="list-group-item-heading">{{ tarefa.titulo }}</h4>
+                            <p class="list-group-item-text">9 de maio de 2015</p>
                         </div>
+                        <div class="col-md-2 tarefas-actions">
+                            <button type="button" class="btn btn-default pull-right" aria-label="Excluir" onclick="modal_excluir_tarefa({{ tarefa.id }})">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </button>
 
+                            <button type="button" class="btn btn-default pull-right" aria-label="Editar" onclick="modal_editar_tarefa({{ tarefa.id }})">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            </button>
+                        </div>
                     </div>
 
-                    {% if forloop.last %}
-                        </div>
-                    {% endif %}
+                </div>
 
-                    {% empty %}
-
-                    <div id="sem-tarefas" class="text-center">
-                        <h1>
-                            <span class="glyphicon glyphicon-pawn text-danger" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-knight text-warning" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-queen text-primary" aria-hidden="true"></span>
-                        </h1>
-
-                        <h3 class="text-muted">Você não possui tarefas (:</h3>
-
-                        <button class="btn btn-lg btn-primary" onclick="modal_nova_tarefa()">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cria nova tarefa
-                        </button>
+                {% if forloop.last %}
                     </div>
+                {% endif %}
 
-                {% endfor %}
-            </div>
+                {% empty %}
+
+                <div id="sem-tarefas" class="text-center">
+                    <h1>
+                        <span class="glyphicon glyphicon-pawn text-danger" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-knight text-warning" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-queen text-primary" aria-hidden="true"></span>
+                    </h1>
+
+                    <h3 class="text-muted">Você não possui tarefas (:</h3>
+
+                    <button class="btn btn-lg btn-primary" onclick="modal_nova_tarefa()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cria nova tarefa
+                    </button>
+                </div>
+
+            {% endfor %}
         </div>
     </div>
 

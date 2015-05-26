@@ -1,8 +1,11 @@
 #menu {
-  margin: 20px;
+  margin: 0px 20px 20px 20px;
 }
 #menu #btn-nova-tarefa {
   margin-left: 10px;
+}
+#informacoes-usuario {
+  padding: 2px 20px;
 }
 .form-padrao {
   max-width: 330px;
@@ -38,7 +41,7 @@
   border-bottom-left-radius: 0;
 }
 #tarefas {
-  padding: 20px;
+  padding: 0 20px;
 }
 #tarefas .tarefas-actions {
   margin-top: 4px;

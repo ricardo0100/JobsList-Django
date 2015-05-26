@@ -11,7 +11,7 @@ from jobs.models import Tarefa
 
 @login_required(login_url='/login')
 def index(request):
-    tarefas = Tarefa.objects.all()
+    tarefas = Tarefa.objects.filter(usuario=request.user)
 
     template = loader.get_template('index.html')
     context = RequestContext(request, {

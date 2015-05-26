@@ -1,9 +1,11 @@
 import datetime
+from django.contrib.auth.models import User
 from django.db import models
 
 class ModelBase(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
+    usuario = models.ForeignKey(User)
 
     class Meta:
         abstract = True
