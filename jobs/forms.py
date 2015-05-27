@@ -1,3 +1,4 @@
+from datetimewidget.widgets import DateTimeWidget
 from django import forms
 from jobs.template_snippets import CustomFormErrorList
 
@@ -33,3 +34,6 @@ class NovaTarefaForm(forms.Form):
 
     titulo = forms.CharField(label='Título', error_messages={'required': 'Dê um nome para a tarefa'})
     descricao = forms.CharField(label='Descrição', widget=forms.Textarea, required=False)
+    vencimento = forms.DateTimeField(label='Vencimento',
+                                     widget=DateTimeWidget(usel10n=True, bootstrap_version=3),
+                                     required=False)

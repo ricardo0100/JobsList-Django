@@ -2,6 +2,8 @@
 
 {% load custom_filters %}
 
+{{ form.media }}
+
 <script type="text/javascript">
     function salvarNovaTarefa() {
         var dados = $('#form-nova-tarefa').serialize();
@@ -58,10 +60,21 @@
                     {{ form.titulo.errors|safe }}
                 </div>
 
-                <div class="form-group">
-                    <label for="{{ form.descricao.label }}">{{ form.descricao.label }}</label>
-                    {{ form.descricao|add_class:"form-control" }}
-                    {{ form.descricao.errors|safe }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.descricao.label }}">{{ form.descricao.label }}</label>
+                            {{ form.descricao|add_class:"form-control" }}
+                            {{ form.descricao.errors|safe }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.vencimento.label }}">{{ form.vencimento.label }}</label>
+                            {{ form.vencimento|add_class:"form-control" }}
+                            {{ form.vencimento.errors|safe }}
+                        </div>
+                    </div>
                 </div>
 
             </div>

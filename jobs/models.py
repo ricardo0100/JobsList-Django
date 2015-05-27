@@ -2,6 +2,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 
+
 class ModelBase(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
@@ -23,6 +24,7 @@ class Tarefa(ModelBase):
 
     titulo = models.CharField(max_length=100)
     descricao = models.TextField()
+    vencimento = models.DateTimeField(null=True)
 
 
 class Alarme(ModelBase):

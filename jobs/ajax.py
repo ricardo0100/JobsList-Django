@@ -12,30 +12,38 @@ from jobs.models import Tarefa
 @login_required(login_url='/login')
 def nova_tarefa(request, id_tarefa=None):
     tarefa = None
+    form = NovaTarefaForm()
+
     if id_tarefa:
         tarefa = Tarefa.objects.get(id=id_tarefa)
+
         if not request.method == 'POST':
             form = NovaTarefaForm(initial={
                 'titulo': tarefa.titulo,
                 'descricao': tarefa.descricao,
+                'vencimento': tarefa.vencimento,
             })
-    else:
-        form = NovaTarefaForm()
 
     if request.method == 'POST':
         form = NovaTarefaForm(request.POST)
+
         if form.is_valid():
             titulo = form.cleaned_data['titulo']
             descricao = form.cleaned_data['descricao']
+            vencimento = form.cleaned_data['vencimento']
+
             if not tarefa:
                 tarefa = Tarefa()
                 tarefa.usuario = request.user
+
             tarefa.titulo = titulo
             tarefa.descricao = descricao
+            tarefa.vencimento = vencimento
+
             tarefa.save()
             return redirect('/')
 
-    template = loader.get_template('modals/nova_tarefa.html')
+    template = loader.get_template('modals/edicao_tarefa.html')
     context = RequestContext(request, {
         'form': form,
         'tarefa': tarefa,

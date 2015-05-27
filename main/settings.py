@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'jobs',
     'django_ajax',
+    'datetimewidget',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -93,7 +94,7 @@ DATABASES['default'] = dj_database_url.config()
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
