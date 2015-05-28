@@ -7,26 +7,28 @@
 <script type="text/javascript">
     function salvarNovaTarefa() {
         var dados = $('#form-nova-tarefa').serialize();
-        var url = '{% url 'cadastro_jobs' %}';
+        var url = '{% url 'cadastro_de_tarefa' %}';
+        var modalCadastro = $('#modal');
+
         $.ajax({
             url: url,
             data: dados,
             method: 'POST'
         }).done(function(data) {
             if(data.status == 302) {
-                document.location.href = data.content;
+                carregar_lista_de_tarefas();
+                modalCadastro.modal('hide');
             }else {
-                var modalCadastro = $('#modal');
                 modalCadastro.html(data.content);
             }
         });
     }
 
     function editarTarefa(id_tarefa) {
+        var url_base = '{% url 'edicao_de_tarefa' 0 %}';
+        var url = url_base.replace('/0/', '/' + id_tarefa + '/');
         var dados = $('#form-nova-tarefa').serialize();
-
-        var url = '{% url 'editar_jobs' 0 %}';
-        url = url.replace('/0/', '/' + id_tarefa + '/');
+        var modalCadastro = $('#modal');
 
         $.ajax({
             url: url,
@@ -34,9 +36,9 @@
             method: 'POST'
         }).done(function(data) {
             if(data.status == 302) {
-                document.location.href = data.content;
+                carregar_lista_de_tarefas();
+                modalCadastro.modal('hide');
             }else {
-                var modalCadastro = $('#modal');
                 modalCadastro.html(data.content);
             }
         });

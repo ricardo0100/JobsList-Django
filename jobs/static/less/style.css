@@ -40,11 +40,23 @@
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+#loading-gif {
+  margin: auto;
+  text-align: center;
+  z-index: 1;
+  position: absolute;
+}
+#loading-gif img {
+  margin-top: 100px;
+}
 #tarefas {
   margin: 0 20px;
 }
 #tarefas .tarefas-actions {
   margin-top: 4px;
+}
+#tarefas .tarefas-actions .btn-concluida {
+  margin-left: 27px;
 }
 #tarefas .tarefas-actions button {
   margin-left: 10px;

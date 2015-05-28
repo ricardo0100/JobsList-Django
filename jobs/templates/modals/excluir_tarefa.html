@@ -1,16 +1,19 @@
 <script type="text/javascript">
     function excluir_tarefa(id_tarefa) {
         var url = '{% url 'excluir_tarefa' %}';
+        var modalConfirmacaoExclusaoTarefa = $('#modal');
         var data = {
             'id_tarefa': id_tarefa
         };
+
         $.ajax({
             url: url,
             data: data,
             method: 'POST'
         }).done(function(data) {
             if(data.status == 302) {
-                document.location.href = data.content;
+                carregar_lista_de_tarefas();
+                modalConfirmacaoExclusaoTarefa.modal('hide');
             }
         });
     }

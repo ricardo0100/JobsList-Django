@@ -25,6 +25,7 @@ class Tarefa(ModelBase):
     titulo = models.CharField(max_length=100)
     descricao = models.TextField()
     vencimento = models.DateTimeField(null=True)
+    concluida = models.BooleanField(default=False)
 
 
 class Alarme(ModelBase):
@@ -34,6 +35,6 @@ class Alarme(ModelBase):
         ('notificacao', 'Notificação Push'),
     )
     tipo = models.CharField(choices=TIPOS_ALARME, max_length=10)
-    job = models.ForeignKey(Tarefa)
+    tarefa = models.ForeignKey(Tarefa)
     horario = models.DateTimeField()
     ativo = models.BooleanField()

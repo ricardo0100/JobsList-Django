@@ -1,12 +1,43 @@
 {% extends "template_geral_interno.html" %}
 
+{% load staticfiles %}
+
 {% block title %}Tarefas{% if user.first_name %} de {{ user.first_name }}{% endif %}{% endblock %}
 
 {% block js %}
 
     <script type="text/javascript">
+
+        $(function(){
+            carregar_lista_de_tarefas();
+        });
+
+        function mostrar_loading_gif() {
+            $('#loading-gif').show();
+        }
+
+        function esconder_loading_gif() {
+            $('#loading-gif').hide();
+        }
+
+        function carregar_lista_de_tarefas() {
+            var div_lista_de_tarefas = $('#lista-de-tarefas');
+            var url = '{% url 'lista_de_tarefas' %}';
+
+            div_lista_de_tarefas.html('');
+            mostrar_loading_gif();
+
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                esconder_loading_gif();
+                div_lista_de_tarefas.html(data.content);
+            });
+        }
+
         function modal_nova_tarefa() {
-            var url = '{% url 'cadastro_jobs' %}';
+            var url = '{% url 'cadastro_de_tarefa' %}';
+
             $.ajax({
                 url: url
             }).done(function(data) {
@@ -17,7 +48,7 @@
         }
 
         function modal_editar_tarefa(id_tarefa) {
-            var url = '{% url 'editar_jobs' 0 %}';
+            var url = '{% url 'edicao_de_tarefa' 0 %}';
             url = url.replace('/0/', '/' + id_tarefa + '/');
 
             $.ajax({
@@ -31,17 +62,22 @@
 
         function modal_excluir_tarefa(id_tarefa) {
             var url = '{% url 'confirmacao_exclusao_tarefa' %}';
+            var modalConfirmacaoExclusaoTarefa = $('#modal');
             var data = {
                 'id_tarefa': id_tarefa
             };
+
             $.ajax({
                 url: url,
                 data: data,
             }).done(function(data) {
-                var modalConfirmacaoExclusaoTarefa = $('#modal');
                 modalConfirmacaoExclusaoTarefa.html(data.content);
                 modalConfirmacaoExclusaoTarefa.modal('show');
             });
+        }
+
+        function marcar_concluida(btn) {
+            $(btn).addClass('btn-success').blur();
         }
     </script>
 {% endblock %}
@@ -49,58 +85,13 @@
 {% block conteudo_interno %}
     <div id="tarefas">
         <div class="row">
-            <div class="col-md-12">
-                {% for tarefa in tarefas %}
 
-                    {% if forloop.first %}
-                        <div class="list-group">
-                    {% endif %}
-
-                    <div class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <h4 class="list-group-item-heading">{{ tarefa.titulo }}</h4>
-                                {% if tarefa.vencimento %}
-                                <p class="list-group-item-text">
-                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}
-                                </p>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-2 tarefas-actions">
-                                <button type="button" class="btn btn-default pull-right" aria-label="Excluir" onclick="modal_excluir_tarefa({{ tarefa.id }})">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button>
-
-                                <button type="button" class="btn btn-default pull-right" aria-label="Editar" onclick="modal_editar_tarefa({{ tarefa.id }})">
-                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {% if forloop.last %}
-                        </div>
-                    {% endif %}
-
-                    {% empty %}
-
-                    <div id="sem-tarefas" class="text-center">
-                        <h1>
-                            <span class="glyphicon glyphicon-pawn text-danger" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-knight text-warning" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-queen text-primary" aria-hidden="true"></span>
-                        </h1>
-
-                        <h3 class="text-muted">Você não possui tarefas (:</h3>
-
-                        <button class="btn btn-lg btn-primary" onclick="modal_nova_tarefa()">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cria nova tarefa
-                        </button>
-                    </div>
-
-                {% endfor %}
+            <div id="loading-gif" class="col-md-12">
+                <img src="{% static 'imagens/loading.gif' %}">
             </div>
+
+            <div id="lista-de-tarefas" class="col-md-12"></div>
+
         </div>
     </div>
 

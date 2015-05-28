@@ -10,6 +10,18 @@ from jobs.models import Tarefa
 
 @ajax
 @login_required(login_url='/login')
+def lista_de_tarefas(request):
+    tarefas = Tarefa.objects.filter(usuario=request.user)
+
+    template = loader.get_template('listagem_tarefas.html')
+    context = RequestContext(request, {
+        'tarefas': tarefas
+    })
+    return HttpResponse(template.render(context))
+
+
+@ajax
+@login_required(login_url='/login')
 def nova_tarefa(request, id_tarefa=None):
     tarefa = None
     form = NovaTarefaForm()
