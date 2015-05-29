@@ -63,9 +63,7 @@
         function modal_excluir_tarefa(id_tarefa) {
             var url = '{% url 'confirmacao_exclusao_tarefa' %}';
             var modalConfirmacaoExclusaoTarefa = $('#modal');
-            var data = {
-                'id_tarefa': id_tarefa
-            };
+            var data = { 'id_tarefa': id_tarefa };
 
             $.ajax({
                 url: url,
@@ -77,7 +75,23 @@
         }
 
         function marcar_concluida(btn) {
-            $(btn).addClass('btn-success').blur();
+            var botao = $(btn);
+            var div_tarefa = botao.closest('.list-group-item');
+            var id = parseInt(div_tarefa.prop('id').substr(7));
+            var concluida = div_tarefa.data('concluida');
+
+            var marcar_como_concluida = true;
+            if(concluida == "True")
+                marcar_como_concluida = false;
+
+            if(marcar_como_concluida) {
+                botao.addClass('btn-success').blur();
+                div_tarefa.data('concluida', 'True');
+            }else{
+                botao.removeClass('btn-success').blur();
+                div_tarefa.data('concluida', 'False');
+            }
+            alert('IMPLEMENTAR AJAX');
         }
     </script>
 {% endblock %}
