@@ -11,7 +11,7 @@ from jobs.models import Tarefa
 @ajax
 @login_required(login_url='/login')
 def lista_de_tarefas(request):
-    tarefas = Tarefa.objects.filter(usuario=request.user)
+    tarefas = Tarefa.objects.filter(usuario=request.user).order_by('titulo')
 
     template = loader.get_template('listagem_tarefas.html')
     context = RequestContext(request, {
@@ -79,3 +79,16 @@ def excluir_tarefa(request):
             'tarefa': tarefa
         })
         return HttpResponse(template.render(context))
+
+
+@ajax
+@login_required(login_url='/login')
+def marcar_tarefa_como_concluida(request):
+    tarefa_id = request.GET['tarefa_id']
+    concluida = False if request.GET['concluida'] == 'false' else True
+
+    tarefa = Tarefa.objects.get(id=tarefa_id)
+    tarefa.concluida = concluida
+    tarefa.save()
+
+    return HttpResponse(status=200)

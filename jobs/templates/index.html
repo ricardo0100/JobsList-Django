@@ -84,14 +84,26 @@
             if(concluida == "True")
                 marcar_como_concluida = false;
 
-            if(marcar_como_concluida) {
-                botao.addClass('btn-success').blur();
-                div_tarefa.data('concluida', 'True');
-            }else{
-                botao.removeClass('btn-success').blur();
-                div_tarefa.data('concluida', 'False');
-            }
-            alert('IMPLEMENTAR AJAX');
+            var url = '{% url 'marcar_tarefa_concluida' %}';
+            var data = {
+                'tarefa_id': id,
+                'concluida': marcar_como_concluida
+            };
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: $.param(data),
+                success: function() {
+                    if(marcar_como_concluida) {
+                        botao.addClass('btn-success').blur();
+                        div_tarefa.data('concluida', 'True');
+                    }else{
+                        botao.removeClass('btn-success').blur();
+                        div_tarefa.data('concluida', 'False');
+                    }
+                }
+            });
         }
     </script>
 {% endblock %}
