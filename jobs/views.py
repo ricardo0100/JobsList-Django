@@ -10,10 +10,8 @@ from jobs.models import Tarefa
 
 
 @login_required(login_url='/login')
-def index(request):
-    tarefas = Tarefa.objects.filter(usuario=request.user)
-
-    template = loader.get_template('index.html')
+def lista(request):
+    template = loader.get_template('lista.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))
 
@@ -33,7 +31,7 @@ def login(request, mostrar_mensagem_logout=False):
                 if user is not None:
                     if user.is_active:
                         django.contrib.auth.login(request, user)
-                        return redirect('/')
+                        return redirect('/lista/')
                     else:
                         form.add_error(None, 'Usuário inativo')
                 else:

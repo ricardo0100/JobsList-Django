@@ -1,0 +1,127 @@
+{% extends "template_geral_interno.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Tarefas{% if user.first_name %} de {{ user.first_name }}{% endif %}{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript">
+
+        $(function(){
+            carregar_lista_de_tarefas();
+        });
+
+        function mostrar_loading_gif() {
+            $('#loading-gif').show();
+        }
+
+        function esconder_loading_gif() {
+            $('#loading-gif').hide();
+        }
+
+        function carregar_lista_de_tarefas() {
+            var div_lista_de_tarefas = $('#lista-de-tarefas');
+            var url = '{% url 'lista_de_tarefas' %}';
+
+            div_lista_de_tarefas.html('');
+            mostrar_loading_gif();
+
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                esconder_loading_gif();
+                div_lista_de_tarefas.html(data.content);
+            });
+        }
+
+        function modal_nova_tarefa() {
+            var url = '{% url 'cadastro_de_tarefa' %}';
+
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                var modalCadastro = $('#modal');
+                modalCadastro.html(data.content);
+                modalCadastro.modal('show');
+            });
+        }
+
+        function modal_editar_tarefa(id_tarefa) {
+            var url = '{% url 'edicao_de_tarefa' 0 %}';
+            url = url.replace('/0/', '/' + id_tarefa + '/');
+
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                var modalCadastro = $('#modal');
+                modalCadastro.html(data.content);
+                modalCadastro.modal('show');
+            });
+        }
+
+        function modal_excluir_tarefa(id_tarefa) {
+            var url = '{% url 'confirmacao_exclusao_tarefa' %}';
+            var modalConfirmacaoExclusaoTarefa = $('#modal');
+            var data = { 'id_tarefa': id_tarefa };
+
+            $.ajax({
+                url: url,
+                data: data,
+            }).done(function(data) {
+                modalConfirmacaoExclusaoTarefa.html(data.content);
+                modalConfirmacaoExclusaoTarefa.modal('show');
+            });
+        }
+
+        function marcar_concluida(btn) {
+            var botao = $(btn);
+            var div_tarefa = botao.closest('.list-group-item');
+            var id = parseInt(div_tarefa.prop('id').substr(7));
+            var concluida = div_tarefa.data('concluida');
+
+            var marcar_como_concluida = true;
+            if(concluida == "True")
+                marcar_como_concluida = false;
+
+            var url = '{% url 'marcar_tarefa_concluida' %}';
+            var data = {
+                'tarefa_id': id,
+                'concluida': marcar_como_concluida
+            };
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: $.param(data),
+                success: function() {
+                    if(marcar_como_concluida) {
+                        botao.addClass('btn-success').blur();
+                        div_tarefa.data('concluida', 'True');
+                    }else{
+                        botao.removeClass('btn-success').blur();
+                        div_tarefa.data('concluida', 'False');
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block conteudo_interno %}
+    <div id="tarefas">
+        <div class="row">
+
+            <div id="loading-gif" class="col-md-12">
+                <img src="{% static 'imagens/loading.gif' %}">
+            </div>
+
+            <div id="lista-de-tarefas" class="col-md-12"></div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+
+    </div>
+{% endblock %}
