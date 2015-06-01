@@ -1,11 +1,19 @@
 {% extends 'template_geral.html' %}
 
+{% block js %}
+    <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+{% endblock %}
+
 {% block title %}JobsList{% endblock %}
 
 {% block conteudo %}
 
     <section id="home">
-    <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+        <div class="home-overlay"></div>
+        <div class="home-content">
+            <h1>JobsList</h1>
+            <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+        </div>
     </section>
 
 {% endblock %}
