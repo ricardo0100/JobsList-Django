@@ -9,12 +9,13 @@ from jobs.forms import LoginForm, CadastroUsuarioForm
 from jobs.models import Tarefa
 
 
-@login_required(login_url='/login')
-def lista(request):
-    template = loader.get_template('lista.html')
-    context = RequestContext(request)
+def home(request):
+    form = LoginForm()
+    template = loader.get_template('home.html')
+    context = RequestContext(request, {
+        'form': form
+    })
     return HttpResponse(template.render(context))
-
 
 def login(request, mostrar_mensagem_logout=False):
     if request.method == 'POST':
@@ -88,4 +89,10 @@ def cadastro(request):
     context = RequestContext(request, {
         'form': form
     })
+    return HttpResponse(template.render(context))
+
+@login_required(login_url='/login')
+def lista(request):
+    template = loader.get_template('lista.html')
+    context = RequestContext(request)
     return HttpResponse(template.render(context))

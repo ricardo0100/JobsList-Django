@@ -1,29 +1,11 @@
 {% extends "template_geral.html" %}
 
-{% load widget_tweaks %}
-
-{% load custom_filters %}
-
 {% block title %}Login{% endblock %}
 
 {% block conteudo %}
 
     <div class="container-fluid">
-        <form id="{{ form.auto_id }}" class="form-padrao" action="{% url 'login' %}" method="post">
-
-            <h2 class="form-padrao-heading">Login</h2>
-
-            {{ form.non_field_errors|safe }}
-
-            {{ form.email|add_class:"form-control"|add_placeholder:form.email.label }}
-            {{ form.email.errors|safe }}
-            {{ form.senha|add_class:"form-control"|add_placeholder:form.senha.label }}
-            {{ form.senha.errors|safe }}
-
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Entrar</button>
-            <a class="btn btn-success btn-lg btn-block" href="{% url "cadastro" %}">Novo usuário</a>
-
-        </form>
+        {% include 'autenticacao/form_login.html' %}
         {% if mostrar_mensagem_logout %}
             <h4 class="text-danger text-center">Logout efetuado com sucesso</h4>
         {% endif %}

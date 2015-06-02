@@ -84,7 +84,7 @@ body {
   -o-background-size: cover;
   background-size: cover;
   padding: 0;
-  padding-top: 300px;
+  padding-top: 100px;
 }
 #home .home-overlay {
   background-color: rgba(44, 62, 80, 0.3);
@@ -101,10 +101,9 @@ body {
   z-index: 100;
   position: relative;
   text-align: center;
+  color: white;
 }
 #home .home-content h1 {
   font-family: 'Oxygen', sans-serif;
-  margin-top: 0;
-  color: white;
   font-size: 6em;
 }

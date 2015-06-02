@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from jobs import ajax
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
+    url(r'^$', views.home, name='home'),
     url(r'^lista/$', views.lista, name='lista'),
     url(r'^login/', views.login, name='login'),
     url(r'^logout/', views.logout, name='logout'),

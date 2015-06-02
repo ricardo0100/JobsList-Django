@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+
+{% load custom_filters %}
+
+<form id="{{ form.auto_id }}" class="form-padrao" action="" method="post">
+
+    <h2 class="form-padrao-heading">Novo usuário</h2>
+
+    {{ form.non_field_errors|safe }}
+
+    {{ form.nome|add_class:"form-control"|add_placeholder:form.nome.label }}
+    {{ form.nome.errors|safe }}
+    {{ form.email|add_class:"form-control"|add_placeholder:form.email.label }}
+    {{ form.email.errors|safe }}
+    {{ form.senha|add_class:"form-control"|add_placeholder:form.senha.label }}
+    {{ form.senha.errors|safe }}
+    {{ form.confirmacao_senha|add_class:"form-control"|add_placeholder:form.confirmacao_senha.label }}
+    {{ form.confirmacao_senha.errors|safe }}
+
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Cadastrar</button>
+    <a class="btn btn-success btn-lg btn-block" href="{% url "login" %}">Já possuo cadastro</a>
+</form>
