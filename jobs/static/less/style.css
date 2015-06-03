@@ -103,7 +103,12 @@ body {
   text-align: center;
   color: white;
 }
+#home .home-content .btn-lg {
+  width: 200px;
+  margin: 5px;
+}
 #home .home-content h1 {
   font-family: 'Oxygen', sans-serif;
   font-size: 6em;
+  margin-bottom: 60px;
 }
