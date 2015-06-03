@@ -1,3 +1,13 @@
+.border-radius (@radius: 5px) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius:    @radius;
+	border-radius:         @radius;
+
+	-moz-background-clip:    padding;
+	-webkit-background-clip: padding-box;
+	background-clip:         padding-box;
+}
+
 #menu {
   margin: 0px 20px 20px 20px;
 
@@ -13,7 +23,7 @@
 .form-padrao {
   max-width: 330px;
   padding: 15px;
-  margin: 40px auto 10px auto;
+  margin: auto;
 
   .form-padrao-heading {
     .checkbox {
@@ -104,7 +114,6 @@ html, body {
        -o-background-size: cover;
           background-size: cover;
   padding: 0;
-  padding-top: 100px;
 
   .home-overlay {
       background-color: rgba(44, 62, 80, 0.3);
@@ -120,13 +129,26 @@ html, body {
 
   .home-content {
     z-index: 100;
-    position: relative;
     text-align: center;
-    color: white;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding-bottom: 20px;
+
+    .border-radius();
+
+    .home-content-item {
+      display: none;
+      height: 100%;
+    }
+    
+    .active {
+      display: block;
+    }
 
     h1 {
       font-family: 'Oxygen', sans-serif;
       font-size: 6em;
+      margin-bottom: 30px;
     }
 
   }
