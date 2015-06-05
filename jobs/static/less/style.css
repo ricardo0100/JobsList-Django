@@ -112,3 +112,7 @@ body {
   font-size: 6em;
   margin-bottom: 60px;
 }
+#home .home-content blockquote {
+  margin-top: 50px;
+  text-align: left;
+}
