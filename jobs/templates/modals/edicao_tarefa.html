@@ -16,7 +16,7 @@
             method: 'POST'
         }).done(function(data) {
             if(data.status == 302) {
-                carregar_lista_de_tarefas();
+                carregar_lista_de_todas_as_tarefas();
                 modalCadastro.modal('hide');
             }else {
                 modalCadastro.html(data.content);
@@ -36,7 +36,7 @@
             method: 'POST'
         }).done(function(data) {
             if(data.status == 302) {
-                carregar_lista_de_tarefas();
+                carregar_lista_de_todas_as_tarefas();
                 modalCadastro.modal('hide');
             }else {
                 modalCadastro.html(data.content);

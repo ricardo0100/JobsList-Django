@@ -12,7 +12,7 @@
                 </h4>
                 {% if tarefa.vencimento %}
                 <p class="list-group-item-text">
-                    {% if tarefa.exibir_como_vencida %}
+                    {% if tarefa.vencida %}
                         <strong><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}</strong>
                     {% else %}
                         <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}

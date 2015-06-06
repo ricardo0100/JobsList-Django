@@ -9,7 +9,7 @@
     <script type="text/javascript">
 
         $(function(){
-            carregar_lista_de_tarefas();
+            carregar_lista_de_todas_as_tarefas();
         });
 
         function mostrar_loading_gif() {
@@ -20,10 +20,8 @@
             $('#loading-gif').hide();
         }
 
-        function carregar_lista_de_tarefas() {
+        function carregar_lista_de_tarefas_de_url(url) {
             var div_lista_de_tarefas = $('#lista-de-tarefas');
-            var url = '{% url 'lista_de_tarefas' %}';
-
             div_lista_de_tarefas.html('');
             mostrar_loading_gif();
 
@@ -33,6 +31,11 @@
                 esconder_loading_gif();
                 div_lista_de_tarefas.html(data.content);
             });
+        }
+
+        function carregar_lista_de_todas_as_tarefas() {
+            var url = '{% url 'lista_de_tarefas' %}';
+            carregar_lista_de_tarefas_de_url(url);
         }
 
         function modal_nova_tarefa() {
