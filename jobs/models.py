@@ -1,6 +1,7 @@
 import datetime
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 
 class ModelBase(models.Model):
@@ -26,6 +27,11 @@ class Tarefa(ModelBase):
     descricao = models.TextField()
     vencimento = models.DateTimeField(null=True)
     concluida = models.BooleanField(default=False)
+
+    @property
+    def exibir_como_atrasada(self):
+        return self.vencimento < timezone.now() and not self.concluida
+
 
 
 class Alarme(ModelBase):

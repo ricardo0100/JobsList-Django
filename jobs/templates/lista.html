@@ -98,9 +98,15 @@
                     if(marcar_como_concluida) {
                         botao.addClass('btn-success').blur();
                         div_tarefa.data('concluida', 'True');
+                        if(div_tarefa.data('vencida') == 'True'){
+                            div_tarefa.removeClass('list-group-item-danger');
+                        }
                     }else{
                         botao.removeClass('btn-success').blur();
                         div_tarefa.data('concluida', 'False');
+                        if(div_tarefa.data('vencida') == 'True'){
+                            div_tarefa.addClass('list-group-item-danger');
+                        }
                     }
                 }
             });

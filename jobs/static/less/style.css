@@ -116,3 +116,6 @@ body {
   margin-top: 50px;
   text-align: left;
 }
+#home .home-content a {
+  color: white;
+}
