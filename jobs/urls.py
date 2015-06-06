@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^ajax/lista-de-todas-as-tarefas/', ajax.lista_de_tarefas, {'tipo_lista': 'todas'}, name='lista_de_todas_as_tarefas'),
     url(r'^ajax/lista-nao-vencidas/', ajax.lista_de_tarefas, {'tipo_lista': 'nao_vencidas'}, name='lista_nao_vencidas'),
     url(r'^ajax/lista-hoje/', ajax.lista_de_tarefas, {'tipo_lista': 'hoje'}, name='lista_hoje'),
+    url(r'^ajax/lista-concluidas/', ajax.lista_de_tarefas, {'tipo_lista': 'concluidas'}, name='lista_concluidas'),
     url(r'^ajax/cadastro-tarefa/', ajax.nova_tarefa, name='cadastro_de_tarefa'),
     url(r'^ajax/editar-tarefa/(?P<id_tarefa>[0-9]+)/$', ajax.nova_tarefa, name='edicao_de_tarefa'),
     url(r'^ajax/confirmacao-exclusao-tarefa/', ajax.excluir_tarefa, name='confirmacao_exclusao_tarefa'),

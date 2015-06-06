@@ -32,6 +32,9 @@
             else if(lista_padrao == 'hoje'){
                 $('#menu-hoje').addClass('active');
                 carregar_lista_para_hoje();
+            }else if(lista_padrao == 'concluidas'){
+                $('#menu-concluidas').addClass('active');
+                carregar_lista_concluidas();
             }
         }
 
@@ -68,6 +71,11 @@
 
         function carregar_lista_para_hoje() {
             var url = '{% url 'lista_hoje' %}';
+            carregar_lista_de_tarefas_de_url(url);
+        }
+
+        function carregar_lista_concluidas() {
+            var url = '{% url 'lista_concluidas' %}';
             carregar_lista_de_tarefas_de_url(url);
         }
 
@@ -116,10 +124,11 @@
             var botao = $(btn);
             var div_tarefa = botao.closest('.list-group-item');
             var id = parseInt(div_tarefa.prop('id').substr(7));
-            var concluida = div_tarefa.data('concluida');
+            var concluida = div_tarefa.data('concluida') == 'True';
+            var vencida = div_tarefa.data('vencida') == 'True';
 
             var marcar_como_concluida = true;
-            if(concluida == "True")
+            if(concluida)
                 marcar_como_concluida = false;
 
             var url = '{% url 'marcar_tarefa_concluida' %}';
@@ -139,12 +148,14 @@
                         if(div_tarefa.data('vencida') == 'True'){
                             div_tarefa.removeClass('list-group-item-danger');
                         }
+                        div_tarefa.addClass('list-group-item-success');
                     }else{
                         botao.removeClass('btn-success').blur();
                         div_tarefa.data('concluida', 'False');
                         if(div_tarefa.data('vencida') == 'True'){
                             div_tarefa.addClass('list-group-item-danger');
                         }
+                        div_tarefa.removeClass('list-group-item-success');
                     }
                 }
             });
