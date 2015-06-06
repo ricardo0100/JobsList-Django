@@ -16,7 +16,10 @@ def lista_de_tarefas(request, tipo_lista):
     if tipo_lista == 'todas':
         filtro = Q()
     elif tipo_lista == 'nao_vencidas':
-        filtro = Q(vencimento__lt=timezone.now(), concluida=False)
+        filtro = Q(Q(concluida=False) | Q(vencimento__lt=timezone.now(), concluida=False))
+    elif tipo_lista == 'hoje':
+        import datetime
+        filtro = Q(vencimento__lte=datetime.date.today(), concluida=False)
 
     tarefas = Tarefa.objects.filter(filtro, usuario=request.user).order_by('titulo')
 

@@ -12,7 +12,7 @@
             carregar_lista_padrao();
         });
 
-        var lista_padrao = 'nao_vencidas';
+        var lista_padrao = 'hoje';
 
         function alterar_listagem_padrao(nova_lista_padrao) {
             $('#nav-menu').find('.active').removeClass('active');
@@ -28,6 +28,10 @@
             else if(lista_padrao == 'nao_vencidas') {
                 $('#menu-pendentes').addClass('active');
                 carregar_lista_nao_vencidas();
+            }
+            else if(lista_padrao == 'hoje'){
+                $('#menu-hoje').addClass('active');
+                carregar_lista_para_hoje();
             }
         }
 
@@ -61,6 +65,13 @@
             var url = '{% url 'lista_nao_vencidas' %}';
             carregar_lista_de_tarefas_de_url(url);
         }
+
+        function carregar_lista_para_hoje() {
+            var url = '{% url 'lista_hoje' %}';
+            carregar_lista_de_tarefas_de_url(url);
+        }
+
+
 
         function modal_nova_tarefa() {
             var url = '{% url 'cadastro_de_tarefa' %}';
