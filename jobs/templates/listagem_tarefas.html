@@ -4,7 +4,7 @@
         <div class="list-group">
     {% endif %}
 
-    <div class="list-group-item {% if tarefa.exibir_como_atrasada %}list-group-item-danger{% endif %}" id="tarefa_{{ tarefa.id }}" data-concluida="{{ tarefa.concluida }}" data-vencida="{{ tarefa.exibir_como_atrasada }}">
+    <div class="list-group-item {% if tarefa.exibir_como_vencida %}list-group-item-danger{% endif %}" id="tarefa_{{ tarefa.id }}" data-concluida="{{ tarefa.concluida }}" data-vencida="{{ tarefa.vencida }}">
         <div class="row">
             <div class="col-md-9">
                 <h4 class="list-group-item-heading" {% if not tarefa.vencimento %}style="margin-top: 10px" {% endif %}>
@@ -12,7 +12,7 @@
                 </h4>
                 {% if tarefa.vencimento %}
                 <p class="list-group-item-text">
-                    {% if tarefa.exibir_como_atrasada %}
+                    {% if tarefa.exibir_como_vencida %}
                         <strong><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}</strong>
                     {% else %}
                         <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}

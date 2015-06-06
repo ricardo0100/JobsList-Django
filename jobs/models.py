@@ -29,9 +29,12 @@ class Tarefa(ModelBase):
     concluida = models.BooleanField(default=False)
 
     @property
-    def exibir_como_atrasada(self):
-        return self.vencimento < timezone.now() and not self.concluida
+    def vencida(self):
+        return self.vencimento < timezone.now()
 
+    @property
+    def exibir_como_vencida(self):
+        return self.vencida and not self.concluida
 
 
 class Alarme(ModelBase):
