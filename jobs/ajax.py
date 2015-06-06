@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
@@ -6,12 +7,18 @@ from django.template import RequestContext
 from django_ajax.decorators import ajax
 from jobs.forms import NovaTarefaForm
 from jobs.models import Tarefa
+from django.utils import timezone
 
 
 @ajax
 @login_required(login_url='/login')
-def lista_de_tarefas(request):
-    tarefas = Tarefa.objects.filter(usuario=request.user).order_by('titulo')
+def lista_de_tarefas(request, tipo_lista):
+    if tipo_lista == 'todas':
+        filtro = Q()
+    elif tipo_lista == 'nao_vencidas':
+        filtro = Q(vencimento__lt=timezone.now(), concluida=False)
+
+    tarefas = Tarefa.objects.filter(filtro, usuario=request.user).order_by('titulo')
 
     template = loader.get_template('listagem_tarefas.html')
     context = RequestContext(request, {
