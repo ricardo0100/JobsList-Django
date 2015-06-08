@@ -5,6 +5,22 @@
 {{ form.media }}
 
 <script type="text/javascript">
+
+    $(function() {
+        carregar_alarmes();
+    });
+
+    function carregar_alarmes() {
+        var url = '{% url 'lista_alarmes' tarefa.id %}';
+        $.ajax({
+            url: url
+        }).done(function(data) {
+            if(data.status == 200) {
+                $('#alarmes').html(data.content);
+            }
+        });
+    }
+
     function salvarNovaTarefa() {
         var dados = $('#form-nova-tarefa').serialize();
         var url = '{% url 'cadastro_de_tarefa' %}';
@@ -24,9 +40,8 @@
         });
     }
 
-    function editarTarefa(id_tarefa) {
-        var url_base = '{% url 'edicao_de_tarefa' 0 %}';
-        var url = url_base.replace('/0/', '/' + id_tarefa + '/');
+    function salvarTarefa() {
+        var url = '{% url 'edicao_de_tarefa' tarefa.id %}';
         var dados = $('#form-nova-tarefa').serialize();
         var modalCadastro = $('#modal');
 
@@ -76,6 +91,9 @@
                             {{ form.vencimento|add_class:"form-control" }}
                             {{ form.vencimento.errors|safe }}
                         </div>
+                        <div id="alarmes">
+
+                        </div>
                     </div>
                 </div>
 
@@ -83,7 +101,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 {% if tarefa %}
-                <button type="button" class="btn btn-primary" onclick="editarTarefa({{ tarefa.id }})">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarTarefa()">Salvar</button>
                 {% else %}
                 <button type="button" class="btn btn-primary" onclick="salvarNovaTarefa()">Criar</button>
                 {% endif %}

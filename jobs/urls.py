@@ -19,4 +19,6 @@ urlpatterns = [
     url(r'^ajax/confirmacao-exclusao-tarefa/', ajax.excluir_tarefa, name='confirmacao_exclusao_tarefa'),
     url(r'^ajax/excluir-tarefa/', ajax.excluir_tarefa, name='excluir_tarefa'),
     url(r'^ajax/marcar-tarefa-concluida/', ajax.marcar_tarefa_como_concluida, name='marcar_tarefa_concluida'),
+    url(r'^ajax/lista-alarmes/(?P<id_tarefa>[0-9]+)/$', ajax.lista_alarmes, name='lista_alarmes'),
+    url(r'^ajax/form-novo-alarme/(?P<id_tarefa>[0-9]+)/$', ajax.novo_alarme, name='novo_alarme'),
 ]

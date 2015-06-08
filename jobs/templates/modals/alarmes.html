@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+
+{% load custom_filters %}
+
+{{ form.media }}
+
+<script>
+    $(function() {
+        $('#novo-alarme').click(function() {
+            var botao = $(this);
+            var popover = $('#form-novo-alarme');
+            if(popover.is(':visible')) {
+                botao.popover('destroy');
+            } else {
+                var url = '{% url 'novo_alarme' tarefa.id %}';
+                $.ajax({
+                    url: url
+                }).done(function (data) {
+                    botao.popover({
+                        content: data.content,
+                        html: true,
+                        placement: 'left',
+                        trigger: 'manual'
+                    }).popover('show');
+                });
+            }
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        {% for alarme in alarmes %}
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                Alarme
+            </div>
+        {% empty %}
+            <p class="text-center text-muted">Nenhum alarme</p>
+        {% endfor %}
+
+        <div id="acoes-alarme">
+            <a id="novo-alarme" class="btn btn-warning btn-mini pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo alarme</a>
+        </div>
+    </div>
+</div>

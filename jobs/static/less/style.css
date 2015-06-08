@@ -119,3 +119,16 @@ body {
 #home .home-content a {
   color: white;
 }
+#form-nova-tarefa .alert {
+  padding: 5px 15px;
+  margin-bottom: 6px;
+}
+#form-nova-tarefa .alert button {
+  margin-top: -2px;
+}
+#acoes-alarme {
+  margin-top: 15px;
+}
+#form-novo-alarme button {
+  margin: 10px 0 10px 10px;
+}

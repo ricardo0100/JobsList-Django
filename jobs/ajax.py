@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.template import loader
 from django.template import RequestContext
 from django_ajax.decorators import ajax
-from jobs.forms import NovaTarefaForm
+from jobs.forms import NovaTarefaForm, NovoAlarmeForm
 from jobs.models import Tarefa
 from django.utils import timezone
 
@@ -41,7 +41,7 @@ def nova_tarefa(request, id_tarefa=None):
     form = NovaTarefaForm()
 
     if id_tarefa:
-        tarefa = Tarefa.objects.get(id=id_tarefa)
+        tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
 
         if not request.method == 'POST':
             form = NovaTarefaForm(initial={
@@ -82,12 +82,12 @@ def nova_tarefa(request, id_tarefa=None):
 def excluir_tarefa(request):
     if request.method == 'POST':
         id_tarefa = request.POST['id_tarefa']
-        tarefa = Tarefa.objects.get(id=id_tarefa)
+        tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
         tarefa.delete()
         return redirect('/')
     else:
         id_tarefa = request.GET['id_tarefa']
-        tarefa = Tarefa.objects.get(id=id_tarefa)
+        tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
         template = loader.get_template('modals/excluir_tarefa.html')
         context = RequestContext(request, {
             'tarefa': tarefa
@@ -101,8 +101,39 @@ def marcar_tarefa_como_concluida(request):
     tarefa_id = request.GET['tarefa_id']
     concluida = False if request.GET['concluida'] == 'false' else True
 
-    tarefa = Tarefa.objects.get(id=tarefa_id)
+    tarefa = Tarefa.objects.get(id=tarefa_id, usuario=request.user)
     tarefa.concluida = concluida
     tarefa.save()
 
     return HttpResponse(status=200)
+
+@ajax
+@login_required(login_url='/login')
+def lista_alarmes(request, id_tarefa):
+    tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
+
+    template = loader.get_template('modals/alarmes.html')
+    context = RequestContext(request, {
+        'alarmes': [],
+        'tarefa': tarefa
+    })
+    return HttpResponse(template.render(context))
+
+
+@ajax
+@login_required(login_url='/login')
+def novo_alarme(request, id_tarefa):
+    tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
+    if request.method == 'POST':
+        form = NovoAlarmeForm(request.POST)
+        if form.is_valid():
+            return redirect('/')
+    else:
+        form = NovoAlarmeForm()
+
+    template = loader.get_template('modals/popover_novo_alarme.html')
+    context = RequestContext(request, {
+        'form': form,
+        'tarefa': tarefa
+    })
+    return HttpResponse(template.render(context))

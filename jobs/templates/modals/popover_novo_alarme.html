@@ -1,0 +1,31 @@
+<script>
+    function CancelarNovoAlarme() {
+        $('#novo-alarme').popover('destroy');
+    }
+
+    function SalvarNovoAlarme() {
+        var url = '{% url 'novo_alarme' tarefa.id %}';
+        var data = $("#form-novo-alarme form").serialize();
+
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'post'
+        }).done(function(data) {
+            if(data.status == 302) {
+                alert('implementar');
+            } else if(data.status == 200) {
+
+            }
+        });
+    }
+</script>
+
+<div id="form-novo-alarme">
+    <h5>Novo alarme</h5>
+    <form>
+        {{ form.horario }}
+        <button type="button" onclick="SalvarNovoAlarme()" class="btn btn-sm btn-primary pull-right">Salvar</button>
+        <button type="button" onclick="CancelarNovoAlarme()" class="btn btn-sm btn-default pull-right">Cancelar</button>
+    </form>
+</div>

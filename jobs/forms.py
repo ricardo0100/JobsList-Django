@@ -37,3 +37,8 @@ class NovaTarefaForm(forms.Form):
     vencimento = forms.DateTimeField(label='Vencimento',
                                      widget=DateTimeWidget(usel10n=True, bootstrap_version=3),
                                      required=False)
+
+
+class NovoAlarmeForm(forms.Form):
+    horario = forms.DateTimeField(label='Horário',
+                                  widget=DateTimeWidget(usel10n=True, bootstrap_version=3))
