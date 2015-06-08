@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'jobs',
     'django_ajax',
     'datetimewidget',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -117,3 +118,9 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10
+}
