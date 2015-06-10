@@ -52,15 +52,19 @@
         });
     }
 
+    function excluir_alarme(id) {
+        alert('Implementar id: ' + id);
+    }
+
 </script>
 
 <div class="row">
     <div class="col-md-12">
         {% for alarme in alarmes %}
             <div class="alert alert-warning" role="alert">
-                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" aria-label="Close" onclick="excluir_alarme({{ alarme.id }})"><span aria-hidden="true">&times;</span></button>
                 <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                Alarme
+                {{ alarme.horario }}
             </div>
         {% empty %}
             <p class="text-center text-muted">Nenhum alarme</p>

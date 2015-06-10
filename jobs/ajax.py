@@ -112,12 +112,12 @@ def marcar_tarefa_como_concluida(request):
 @login_required(login_url='/login')
 def lista_alarmes(request, id_tarefa):
     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
-
+    alarmes = Alarme.objects.filter(tarefa=tarefa).order_by('-horario')
     form = NovoAlarmeForm()
 
     template = loader.get_template('modals/alarmes.html')
     context = RequestContext(request, {
-        'alarmes': [],
+        'alarmes': alarmes,
         'tarefa': tarefa,
         'form_novo_alarme': form
     })
@@ -131,6 +131,7 @@ def salvar_novo_alarme(request, id_tarefa):
 
     if form.is_valid():
         horario = form.cleaned_data['horario']
+        # TODO: Criar alarme de outra forma mais bonita
         alarme = Alarme()
         alarme.tarefa = tarefa
         alarme.usuario = request.user
