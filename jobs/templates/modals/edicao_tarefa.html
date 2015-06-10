@@ -110,3 +110,12 @@
         </div>
     </div>
 </form>
+
+<div id="form-novo-alarme" style="display: none">
+    <h5>Novo alarme</h5>
+    <form>
+        {{ form.horario }}
+        <button type="button" onclick="SalvarNovoAlarme()" class="btn btn-sm btn-primary pull-right">Salvar</button>
+        <button type="button" onclick="CancelarNovoAlarme()" class="btn btn-sm btn-default pull-right">Cancelar</button>
+    </form>
+</div>

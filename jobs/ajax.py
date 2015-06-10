@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
@@ -6,7 +7,7 @@ from django.template import loader
 from django.template import RequestContext
 from django_ajax.decorators import ajax
 from jobs.forms import NovaTarefaForm, NovoAlarmeForm
-from jobs.models import Tarefa
+from jobs.models import Tarefa, Alarme
 from django.utils import timezone
 
 
@@ -112,28 +113,30 @@ def marcar_tarefa_como_concluida(request):
 def lista_alarmes(request, id_tarefa):
     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
 
+    form = NovoAlarmeForm()
+
     template = loader.get_template('modals/alarmes.html')
     context = RequestContext(request, {
         'alarmes': [],
-        'tarefa': tarefa
+        'tarefa': tarefa,
+        'form_novo_alarme': form
     })
     return HttpResponse(template.render(context))
-
 
 @ajax
 @login_required(login_url='/login')
-def novo_alarme(request, id_tarefa):
+def salvar_novo_alarme(request, id_tarefa):
     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
-    if request.method == 'POST':
-        form = NovoAlarmeForm(request.POST)
-        if form.is_valid():
-            return redirect('/')
-    else:
-        form = NovoAlarmeForm()
+    form = NovoAlarmeForm(request.POST)
 
-    template = loader.get_template('modals/popover_novo_alarme.html')
-    context = RequestContext(request, {
-        'form': form,
-        'tarefa': tarefa
-    })
-    return HttpResponse(template.render(context))
+    if form.is_valid():
+        horario = form.cleaned_data['horario']
+        alarme = Alarme()
+        alarme.tarefa = tarefa
+        alarme.usuario = request.user
+        alarme.horario = horario
+        alarme.ativo = True
+        alarme.save()
+        return redirect('/')
+    else:
+        return HttpResponse(json.dumps(form.errors['horario'][0]))
