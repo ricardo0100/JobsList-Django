@@ -11,14 +11,16 @@
     });
 
     function carregar_alarmes() {
-        var url = '{% url 'lista_alarmes' tarefa.id %}';
-        $.ajax({
-            url: url
-        }).done(function(data) {
-            if(data.status == 200) {
-                $('#alarmes').html(data.content);
-            }
-        });
+        {% if tarefa %}
+            var url = '{% url 'lista_alarmes' tarefa.id %}';
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                if(data.status == 200) {
+                    $('#alarmes').html(data.content);
+                }
+            });
+        {% endif %}
     }
 
     function salvarNovaTarefa() {
@@ -41,7 +43,11 @@
     }
 
     function salvarTarefa() {
-        var url = '{% url 'edicao_de_tarefa' tarefa.id %}';
+        {% if tarefa %}
+            var url = '{% url 'edicao_de_tarefa' tarefa.id %}';
+        {% else %}
+            var url = '{% url 'cadastro_de_tarefa' %}';
+        {% endif %}
         var dados = $('#form-nova-tarefa').serialize();
         var modalCadastro = $('#modal');
 
