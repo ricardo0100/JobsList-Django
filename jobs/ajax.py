@@ -14,9 +14,8 @@ from django.utils import timezone
 @ajax
 @login_required(login_url='/login')
 def lista_de_tarefas(request, tipo_lista):
-    if tipo_lista == 'todas':
-        filtro = Q()
-    elif tipo_lista == 'nao_vencidas':
+    filtro = Q()
+    if tipo_lista == 'nao_vencidas':
         filtro = Q(Q(concluida=False) | Q(vencimento__lt=timezone.now(), concluida=False))
     elif tipo_lista == 'hoje':
         import datetime
@@ -28,7 +27,7 @@ def lista_de_tarefas(request, tipo_lista):
 
     user = request.user
 
-    tarefas = Tarefa.objects.filter(filtro, usuario=user).order_by('titulo')
+    tarefas = Tarefa.objects.filter(filtro, usuario=user).order_by('vencimento')
 
     template = loader.get_template('listagem_tarefas.html')
     context = RequestContext(request, {
@@ -144,3 +143,11 @@ def salvar_novo_alarme(request, id_tarefa):
         return redirect('/')
     else:
         return HttpResponse(json.dumps(form.errors['horario'][0]))
+
+@ajax
+@login_required(login_url='/login')
+def excluir_alarme(request, id_alarme):
+    user = request.user
+    alarme = Alarme.objects.get(id=id_alarme, usuario=user)
+    alarme.delete()
+    return redirect('/')
