@@ -1,3 +1,4 @@
+celery==3.1.18
 dj-database-url==0.3.0
 Django==1.8.1
 django-datetime-widget==0.9.3
