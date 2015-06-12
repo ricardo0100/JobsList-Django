@@ -144,6 +144,10 @@ def salvar_novo_alarme(request, id_tarefa):
         alarme.horario = horario
         alarme.ativo = True
         alarme.save()
+
+        from tasks import add
+        add.delay(1, 1)
+
         return redirect('/')
     else:
         return HttpResponse(json.dumps(form.errors['horario'][0]))
