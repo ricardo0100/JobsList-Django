@@ -1,6 +1,5 @@
 import json
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -70,7 +69,6 @@ def nova_tarefa(request, id_tarefa=None):
             tarefa.vencimento = vencimento
 
             tarefa.save()
-            enviar_email_de_teste()
             return redirect('/')
 
     template = loader.get_template('modals/edicao_tarefa.html')
@@ -80,8 +78,6 @@ def nova_tarefa(request, id_tarefa=None):
     })
     return HttpResponse(template.render(context))
 
-def enviar_email_de_teste():
-    send_mail('Subject here', 'Here is the message.', 'ricardo0100@gmail.com', ['ricardo0100@gmail.com'], fail_silently=False)
 
 @ajax
 @login_required(login_url='/login')
@@ -133,6 +129,8 @@ def lista_alarmes(request, id_tarefa):
 @login_required(login_url='/login')
 def salvar_novo_alarme(request, id_tarefa):
     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
+    usuario = request.user
+
     form = NovoAlarmeForm(request.POST)
 
     if form.is_valid():
@@ -140,13 +138,17 @@ def salvar_novo_alarme(request, id_tarefa):
         # TODO: Criar alarme de outra forma mais bonita
         alarme = Alarme()
         alarme.tarefa = tarefa
-        alarme.usuario = request.user
+        alarme.usuario = usuario
         alarme.horario = horario
         alarme.ativo = True
         alarme.save()
 
-        from tasks import add
-        add.delay(1, 1)
+        destinatario = usuario.email
+        assunto = 'Alarme para a tarefa {0}'.format(tarefa.titulo)
+        mensagem = 'TESTE'
+
+        from tasks import enviar_alarme_por_email
+        enviar_alarme_por_email.delay(destinatario, assunto, mensagem)
 
         return redirect('/')
     else:
