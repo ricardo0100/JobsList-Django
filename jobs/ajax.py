@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -69,6 +70,7 @@ def nova_tarefa(request, id_tarefa=None):
             tarefa.vencimento = vencimento
 
             tarefa.save()
+            enviar_email_de_teste()
             return redirect('/')
 
     template = loader.get_template('modals/edicao_tarefa.html')
@@ -78,6 +80,8 @@ def nova_tarefa(request, id_tarefa=None):
     })
     return HttpResponse(template.render(context))
 
+def enviar_email_de_teste():
+    send_mail('Subject here', 'Here is the message.', 'ricardo0100@gmail.com', ['ricardo0100@gmail.com'], fail_silently=False)
 
 @ajax
 @login_required(login_url='/login')

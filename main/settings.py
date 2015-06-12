@@ -30,7 +30,7 @@ SECRET_KEY = 'ezlc#4h1@**j6qzt%_62ff=qblti^)o-5@ghr_)vwea(y1&+j^'
 if socket.gethostname() == 'MacBook-Air-de-Ricardo.local':
     DEBUG = True
 else:
-    DEBUG = True
+    DEBUG = True #TODO
 
 ALLOWED_HOSTS = []
 
@@ -117,3 +117,9 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('GMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_HOST_PASSWORD')
