@@ -12,7 +12,7 @@
             carregar_lista_padrao();
         });
 
-        var lista_padrao = 'hoje';
+        var lista_padrao = 'nao_vencidas';
 
         function alterar_listagem_padrao(nova_lista_padrao) {
             $('#nav-menu').find('.active').removeClass('active');
@@ -113,7 +113,7 @@
 
             $.ajax({
                 url: url,
-                data: data,
+                data: data
             }).done(function(data) {
                 modalConfirmacaoExclusaoTarefa.html(data.content);
                 modalConfirmacaoExclusaoTarefa.modal('show');

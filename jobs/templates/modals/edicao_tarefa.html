@@ -11,14 +11,16 @@
     });
 
     function carregar_alarmes() {
-        var url = '{% url 'lista_alarmes' tarefa.id %}';
-        $.ajax({
-            url: url
-        }).done(function(data) {
-            if(data.status == 200) {
-                $('#alarmes').html(data.content);
-            }
-        });
+        {% if tarefa %}
+            var url = '{% url 'lista_alarmes' tarefa.id %}';
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                if(data.status == 200) {
+                    $('#alarmes').html(data.content);
+                }
+            });
+        {% endif %}
     }
 
     function salvarNovaTarefa() {
@@ -41,7 +43,11 @@
     }
 
     function salvarTarefa() {
-        var url = '{% url 'edicao_de_tarefa' tarefa.id %}';
+        {% if tarefa %}
+            var url = '{% url 'edicao_de_tarefa' tarefa.id %}';
+        {% else %}
+            var url = '{% url 'cadastro_de_tarefa' %}';
+        {% endif %}
         var dados = $('#form-nova-tarefa').serialize();
         var modalCadastro = $('#modal');
 
@@ -110,3 +116,12 @@
         </div>
     </div>
 </form>
+
+<div id="form-novo-alarme" style="display: none">
+    <h5>Novo alarme</h5>
+    <form>
+        {{ form.horario }}
+        <button type="button" onclick="SalvarNovoAlarme()" class="btn btn-sm btn-primary pull-right">Salvar</button>
+        <button type="button" onclick="CancelarNovoAlarme()" class="btn btn-sm btn-default pull-right">Cancelar</button>
+    </form>
+</div>

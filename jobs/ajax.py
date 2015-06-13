@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
@@ -6,16 +7,15 @@ from django.template import loader
 from django.template import RequestContext
 from django_ajax.decorators import ajax
 from jobs.forms import NovaTarefaForm, NovoAlarmeForm
-from jobs.models import Tarefa
+from jobs.models import Tarefa, Alarme
 from django.utils import timezone
 
 
 @ajax
 @login_required(login_url='/login')
 def lista_de_tarefas(request, tipo_lista):
-    if tipo_lista == 'todas':
-        filtro = Q()
-    elif tipo_lista == 'nao_vencidas':
+    filtro = Q()
+    if tipo_lista == 'nao_vencidas':
         filtro = Q(Q(concluida=False) | Q(vencimento__lt=timezone.now(), concluida=False))
     elif tipo_lista == 'hoje':
         import datetime
@@ -25,7 +25,9 @@ def lista_de_tarefas(request, tipo_lista):
         import datetime
         filtro = Q(concluida=True)
 
-    tarefas = Tarefa.objects.filter(filtro, usuario=request.user).order_by('titulo')
+    user = request.user
+
+    tarefas = Tarefa.objects.filter(filtro, usuario=user).order_by('vencimento')
 
     template = loader.get_template('listagem_tarefas.html')
     context = RequestContext(request, {
@@ -101,7 +103,8 @@ def marcar_tarefa_como_concluida(request):
     tarefa_id = request.GET['tarefa_id']
     concluida = False if request.GET['concluida'] == 'false' else True
 
-    tarefa = Tarefa.objects.get(id=tarefa_id, usuario=request.user)
+    user = request.user
+    tarefa = Tarefa.objects.get(id=tarefa_id, usuario=user)
     tarefa.concluida = concluida
     tarefa.save()
 
@@ -111,29 +114,50 @@ def marcar_tarefa_como_concluida(request):
 @login_required(login_url='/login')
 def lista_alarmes(request, id_tarefa):
     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
+    alarmes = Alarme.objects.filter(tarefa=tarefa).order_by('-horario')
+    form = NovoAlarmeForm()
 
     template = loader.get_template('modals/alarmes.html')
     context = RequestContext(request, {
-        'alarmes': [],
-        'tarefa': tarefa
+        'alarmes': alarmes,
+        'tarefa': tarefa,
+        'form_novo_alarme': form
     })
     return HttpResponse(template.render(context))
-
 
 @ajax
 @login_required(login_url='/login')
-def novo_alarme(request, id_tarefa):
+def salvar_novo_alarme(request, id_tarefa):
     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
-    if request.method == 'POST':
-        form = NovoAlarmeForm(request.POST)
-        if form.is_valid():
-            return redirect('/')
-    else:
-        form = NovoAlarmeForm()
+    usuario = request.user
 
-    template = loader.get_template('modals/popover_novo_alarme.html')
-    context = RequestContext(request, {
-        'form': form,
-        'tarefa': tarefa
-    })
-    return HttpResponse(template.render(context))
+    form = NovoAlarmeForm(request.POST)
+
+    if form.is_valid():
+        horario = form.cleaned_data['horario']
+        # TODO: Criar alarme de outra forma mais bonita
+        alarme = Alarme()
+        alarme.tarefa = tarefa
+        alarme.usuario = usuario
+        alarme.horario = horario
+        alarme.ativo = True
+        alarme.save()
+
+        destinatario = usuario.email
+        assunto = 'Alarme para a tarefa {0}'.format(tarefa.titulo)
+        mensagem = 'TESTE'
+
+        from tasks import enviar_alarme_por_email
+        enviar_alarme_por_email.delay(destinatario, assunto, mensagem)
+
+        return redirect('/')
+    else:
+        return HttpResponse(json.dumps(form.errors['horario'][0]))
+
+@ajax
+@login_required(login_url='/login')
+def excluir_alarme(request, id_alarme):
+    user = request.user
+    alarme = Alarme.objects.get(id=id_alarme, usuario=user)
+    alarme.delete()
+    return redirect('/')

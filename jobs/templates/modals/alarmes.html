@@ -5,36 +5,75 @@
 {{ form.media }}
 
 <script>
+
     $(function() {
+        popover_novo_alarme();
+    });
+
+    function popover_novo_alarme() {
         $('#novo-alarme').click(function() {
             var botao = $(this);
             var popover = $('#form-novo-alarme');
+
             if(popover.is(':visible')) {
                 botao.popover('destroy');
             } else {
-                var url = '{% url 'novo_alarme' tarefa.id %}';
-                $.ajax({
-                    url: url
-                }).done(function (data) {
-                    botao.popover({
-                        content: data.content,
-                        html: true,
-                        placement: 'left',
-                        trigger: 'manual'
-                    }).popover('show');
-                });
+                var content = '<div id="popover_form_nova_tarefa">' + $('#content_form_nova_tarefa').html() + '</div>';
+                botao.popover({
+                    content: content,
+                    html: true,
+                    placement: 'left',
+                    trigger: 'manual'
+                }).popover('show');
+
             }
         });
-    });
+    }
+
+    function cancelarNovoAlarme() {
+        $('#novo-alarme').popover('destroy');
+    }
+
+    function salvarNovoAlarme() {
+        var data = $('#popover_form_nova_tarefa form').serialize();
+        var url = '{% url 'salvar_novo_alarme' tarefa.id %}';
+
+        $.ajax({
+            url: url,
+            method: 'post',
+            data: data,
+            type: 'json'
+        }).done(function(data) {
+            if(data.status == 302) {
+                carregar_alarmes();
+            }else {
+                $('#popover_form_nova_tarefa').find('#mensagem-erro').html(JSON.parse(data.content));
+            }
+        });
+    }
+
+    function excluir_alarme(id) {
+        var url = '{% url 'excluir_alarme' 0 %}';
+        url = url.replace('/0/', '/' + id + '/');
+
+        $.ajax({
+            url: url
+        }).done(function(data){
+            if(data.status == 302) {
+                carregar_alarmes();
+            }
+        });
+    }
+
 </script>
 
 <div class="row">
     <div class="col-md-12">
         {% for alarme in alarmes %}
             <div class="alert alert-warning" role="alert">
-                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" aria-label="Close" onclick="excluir_alarme({{ alarme.id }})"><span aria-hidden="true">&times;</span></button>
                 <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                Alarme
+                {{ alarme.horario }}
             </div>
         {% empty %}
             <p class="text-center text-muted">Nenhum alarme</p>
@@ -45,3 +84,12 @@
         </div>
     </div>
 </div>
+
+<span id="content_form_nova_tarefa" style="display: none;">
+    <form>
+        {{ form_novo_alarme.horario }}
+    </form>
+    <p id="mensagem-erro" class="text-danger"></p>
+    <button type="button" class="btn btn-primary pull-right" onclick="salvarNovoAlarme()">Salvar</button>
+    <button type="button" class="btn btn-default pull-right" onclick="cancelarNovoAlarme()">Cancelar</button>
+</span>
