@@ -20,6 +20,10 @@ class ModelBase(models.Model):
         return super(ModelBase, self).save(*args, **kwargs)
 
 
+class Grupo(ModelBase):
+    nome = models.CharField(max_length=100)
+
+
 class Tarefa(ModelBase):
     def __str__(self):
         return self.titulo
@@ -28,6 +32,8 @@ class Tarefa(ModelBase):
     descricao = models.TextField()
     vencimento = models.DateTimeField(null=True)
     concluida = models.BooleanField(default=False)
+
+    grupo = models.ForeignKey(Grupo, null=True)
 
     @property
     def vencida(self):
