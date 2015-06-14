@@ -106,5 +106,9 @@ sudo rabbitmqctl stop
 ```
 
 ```
-GMAIL_HOST_USER=email GMAIL_HOST_PASSWORD=senha DJANGO_SETTINGS_MODULE=main.settings celery -A tasks worker --loglevel=info
+export GMAIL_HOST_USER=email
+export GMAIL_HOST_PASSWORD=senha
+export DJANGO_SETTINGS_MODULE=main.settings
+
+celery -A tasks worker --loglevel=info
 ```
