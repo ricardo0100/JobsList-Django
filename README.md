@@ -61,7 +61,34 @@ source /usr/local/bin/virtualenvwrapper.sh
 mkvirtualenv otes02 --python=/usr/local/bin/python3
 ```
 
+**PostgreSQL**
+
+```
+PYTHON=/usr/local/bin/python brew install postgresql
+initdb -A trust /usr/local/var/postgres
+initdb /usr/local/var/postgres -E utf8
+```
+
+Trocar a versão do PostgreSQL para a instalada
+```
+mkdir -p ~/Library/LaunchAgents
+cp /usr/local/Cellar/postgresql/9.1.4/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+
+```
+
+Criar database
+```
+createdb otes02
+```
+
 **Requirements**
 ```
 pip install -r requirements.txt
+```
+
+Configurar a variável de ambiente DATABASE_URL=postgres://user:password@localhost:5432/otes02
+
+```
+python manage.py syncdb
 ```
