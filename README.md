@@ -112,6 +112,7 @@ export DJANGO_SETTINGS_MODULE=main.settings
 
 celery -A tasks worker --loglevel=info
 ```
+[Celery no Heroku](https://devcenter.heroku.com/articles/one-off-dynos#one-off-dyno-execution-syntax)
 
 Configurar o Broker do Celery
 ```
