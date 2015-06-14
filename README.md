@@ -112,3 +112,9 @@ export DJANGO_SETTINGS_MODULE=main.settings
 
 celery -A tasks worker --loglevel=info
 ```
+
+Configurar o Broker do Celery
+```
+export RABBITMQ_BIGWIG_RX_URL=url
+export RABBITMQ_BIGWIG_TX_URL=url
+```
