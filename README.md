@@ -30,3 +30,38 @@ Framework web em python
 Framework front-end (CSS e JS)
 
 
+---
+
+
+##Instalação do Ambiente de Desenvolvimento no Mac OSX##
+
+**Pré requisitos**
+
+-Xcode
+
+
+**HomeBrew**
+
+```
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+**Python**
+```
+brew install python
+brew install python3
+```
+
+**Virtual Env**
+
+```
+pip install virtualenv
+pip install virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
+mkvirtualenv otes02 --python=/usr/local/bin/python3
+```
+
+**Requirements**
+```
+pip install -r requirements.txt
+```
