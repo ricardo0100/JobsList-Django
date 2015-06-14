@@ -1,3 +1,4 @@
+import datetime
 import json
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -147,8 +148,10 @@ def salvar_novo_alarme(request, id_tarefa):
         assunto = 'Alarme para a tarefa {0}'.format(tarefa.titulo)
         mensagem = 'TESTE'
 
+        countdown = horario - timezone.now()
+
         from tasks import enviar_alarme_por_email
-        enviar_alarme_por_email.delay(destinatario, assunto, mensagem)
+        enviar_alarme_por_email.apply_async((destinatario, assunto, mensagem, ), countdown=countdown.seconds)
 
         return redirect('/')
     else:
