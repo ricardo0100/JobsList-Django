@@ -146,7 +146,7 @@ def salvar_novo_alarme(request, id_tarefa):
 
         destinatario = usuario.email
         assunto = 'Alarme para a tarefa {0}'.format(tarefa.titulo)
-        mensagem = 'TESTE'
+        mensagem = assunto
 
         countdown = horario - timezone.now()
 
