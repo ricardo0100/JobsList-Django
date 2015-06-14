@@ -15,8 +15,8 @@ class ModelBase(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.created = datetime.datetime.today()
-        self.modified = datetime.datetime.today()
+            self.created = timezone.now()
+        self.modified = timezone.now()
         return super(ModelBase, self).save(*args, **kwargs)
 
 
