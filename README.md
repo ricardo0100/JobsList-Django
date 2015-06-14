@@ -92,3 +92,19 @@ Configurar a variável de ambiente DATABASE_URL=postgres://user:password@localho
 ```
 python manage.py syncdb
 ```
+
+**RabitMQ para o Celery**
+```
+brew install rabbitmq
+PATH=$PATH:/usr/local/sbin
+```
+
+```
+sudo rabbitmq-server -detached
+sudo rabbitmqctl status
+sudo rabbitmqctl stop
+```
+
+```
+GMAIL_HOST_USER=email GMAIL_HOST_PASSWORD=senha DJANGO_SETTINGS_MODULE=main.settings celery -A tasks worker --loglevel=info
+```
