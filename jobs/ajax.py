@@ -151,7 +151,7 @@ def salvar_novo_alarme(request, id_tarefa):
         countdown = horario - timezone.now()
 
         from tasks import enviar_alarme_por_email
-        enviar_alarme_por_email.apply_async((destinatario, assunto, mensagem, ), countdown=countdown.seconds)
+        enviar_alarme_por_email.delay(destinatario, assunto, mensagem)
 
         return redirect('/')
     else:
