@@ -9,15 +9,22 @@
     <script type="text/javascript">
 
         $(function() {
-            carregar_lista_padrao();
+            carregar_lista_de_grupos();
         });
 
         var lista_padrao = 'nao_vencidas';
+        var grupo_id_selecionado = 0;
 
         function alterar_listagem_padrao(nova_lista_padrao) {
             $('#nav-menu').find('.active').removeClass('active');
             lista_padrao = nova_lista_padrao;
             carregar_lista_padrao();
+        }
+
+        function alterar_grupo_selecionado(novo_id_grupo_selecionado) {
+            $('#lista-de-grupos').find('.active').removeClass('active');
+           grupo_id_selecionado = novo_id_grupo_selecionado;
+            carregar_lista_de_grupos(grupo_id_selecionado);
         }
 
         function carregar_lista_padrao() {
@@ -38,6 +45,21 @@
             }
         }
 
+        function carregar_lista_de_grupos(grupo_id_selecionado) {
+            var url ='{% url 'lista_de_grupos' %}';
+            var div_lista_de_grupos = $('#lista-de-grupos');
+
+            $.ajax({
+               url: url,
+                data: {
+                    'grupo_id': grupo_id_selecionado
+                }
+            }).done(function(data) {
+                div_lista_de_grupos.html(data.content);
+                carregar_lista_padrao();
+            });
+        }
+
         function mostrar_loading_gif() {
             $('#loading-gif').show();
         }
@@ -52,7 +74,10 @@
             mostrar_loading_gif();
 
             $.ajax({
-                url: url
+                url: url,
+                data: {
+                    'grupo_id': grupo_id_selecionado
+                }
             }).done(function(data) {
                 esconder_loading_gif();
                 div_lista_de_tarefas.html(data.content);
@@ -167,11 +192,20 @@
     <div id="tarefas">
         <div class="row">
 
-            <div id="loading-gif" class="col-md-12">
-                <img src="{% static 'imagens/loading.gif' %}">
-            </div>
+            <div id="lista-de-grupos" class="col-md-4"></div>
 
-            <div id="lista-de-tarefas" class="col-md-12"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="loading-gif">
+                            <img src="{% static 'imagens/loading.gif' %}">
+                        </div>
+                        <div id="lista-de-tarefas">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

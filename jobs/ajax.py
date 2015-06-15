@@ -8,7 +8,7 @@ from django.template import loader
 from django.template import RequestContext
 from django_ajax.decorators import ajax
 from jobs.forms import NovaTarefaForm, NovoAlarmeForm
-from jobs.models import Tarefa, Alarme
+from jobs.models import Tarefa, Alarme, Grupo
 from django.utils import timezone
 
 
@@ -25,6 +25,11 @@ def lista_de_tarefas(request, tipo_lista):
     elif tipo_lista == 'concluidas':
         import datetime
         filtro = Q(concluida=True)
+
+    grupo_id = int(request.GET.get('grupo_id', 0))
+
+    if grupo_id:
+        filtro &= Q(grupo__id=grupo_id)
 
     user = request.user
 
@@ -164,3 +169,23 @@ def excluir_alarme(request, id_alarme):
     alarme = Alarme.objects.get(id=id_alarme, usuario=user)
     alarme.delete()
     return redirect('/')
+
+
+@ajax
+@login_required(login_url='/login')
+def lista_de_grupos(request):
+    user = request.user
+    grupos = Grupo.objects.filter(usuario=user)
+
+    id_grupo_selecionado = int(request.GET.get('grupo_id', 0))
+
+    filtro = Q(Q(concluida=False) | Q(vencimento__lt=timezone.now(), concluida=False))
+    total_pendentes = Tarefa.objects.filter(filtro).count()
+
+    template = loader.get_template('modals/lista-de-grupos.html')
+    context = RequestContext(request, {
+        'grupos': grupos,
+        'id_grupo_selecionado': id_grupo_selecionado,
+        'total_pendentes': total_pendentes,
+    })
+    return HttpResponse(template.render(context))

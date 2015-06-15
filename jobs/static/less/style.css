@@ -44,7 +44,6 @@
   margin: auto;
   text-align: center;
   z-index: 1;
-  position: absolute;
 }
 #loading-gif img {
   margin-top: 100px;
