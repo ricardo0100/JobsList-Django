@@ -1,7 +1,6 @@
 from django.conf.urls import url
 
 from . import views
-from django.views.generic import TemplateView
 from jobs import ajax
 
 urlpatterns = [
@@ -27,5 +26,7 @@ urlpatterns = [
     url(r'^ajax/salvar-novo-alarme/(?P<id_tarefa>[0-9]+)/$', ajax.salvar_novo_alarme, name='salvar_novo_alarme'),
     url(r'^ajax/excluir-alarme/(?P<id_alarme>[0-9]+)/$', ajax.excluir_alarme, name='excluir_alarme'),
 
-    url(r'^ajax/lista_de_grupos/$', ajax.lista_de_grupos, name='lista_de_grupos'),
+
+    url(r'^ajax/lista-grupos/$', ajax.lista_grupos, name='lista_grupos'),
+
 ]

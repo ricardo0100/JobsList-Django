@@ -15,6 +15,8 @@ from django.utils import timezone
 @ajax
 @login_required(login_url='/login')
 def lista_de_tarefas(request, tipo_lista):
+    user = request.user
+
     filtro = Q()
     if tipo_lista == 'nao_vencidas':
         filtro = Q(Q(concluida=False) | Q(vencimento__lt=timezone.now(), concluida=False))
@@ -26,12 +28,14 @@ def lista_de_tarefas(request, tipo_lista):
         import datetime
         filtro = Q(concluida=True)
 
-    grupo_id = int(request.GET.get('grupo_id', 0))
+    grupos_ids = [int(grupo_id) for grupo_id in request.GET.getlist('grupos_ids[]')]
 
-    if grupo_id:
-        filtro &= Q(grupo__id=grupo_id)
+    if grupos_ids:
+        grupos = Grupo.objects.filter(id__in=grupos_ids, usuario=user)
+        filtro &= Q(grupo__in=grupos)
 
-    user = request.user
+        if 0 in grupos_ids:
+            filtro |= Q(grupo=None)
 
     tarefas = Tarefa.objects.filter(filtro, usuario=user).order_by('vencimento')
 
@@ -173,19 +177,12 @@ def excluir_alarme(request, id_alarme):
 
 @ajax
 @login_required(login_url='/login')
-def lista_de_grupos(request):
+def lista_grupos(request):
     user = request.user
     grupos = Grupo.objects.filter(usuario=user)
 
-    id_grupo_selecionado = int(request.GET.get('grupo_id', 0))
-
-    filtro = Q(Q(concluida=False) | Q(vencimento__lt=timezone.now(), concluida=False))
-    total_pendentes = Tarefa.objects.filter(filtro).count()
-
-    template = loader.get_template('modals/lista-de-grupos.html')
+    template = loader.get_template('lista_grupos.html')
     context = RequestContext(request, {
-        'grupos': grupos,
-        'id_grupo_selecionado': id_grupo_selecionado,
-        'total_pendentes': total_pendentes,
+        'grupos': grupos
     })
     return HttpResponse(template.render(context))
