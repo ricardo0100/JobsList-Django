@@ -9,7 +9,8 @@
 
             <div class="col-md-9">
                 <h4 class="list-group-item-heading" {% if not tarefa.vencimento %}style="margin-top: 10px" {% endif %}>
-                    [{{ tarefa.grupo.nome|default:'Sem Grupo' }}] {{ tarefa.titulo }}
+                    {% if tarefa.grupo %}[{{ tarefa.grupo.nome|default:'Sem Grupo' }}]{% endif %}
+                    {{ tarefa.titulo }}
                 </h4>
 
                 {% if tarefa.vencimento %}

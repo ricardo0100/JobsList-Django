@@ -35,6 +35,7 @@
         }).done(function(data) {
             if(data.status == 302) {
                 carregar_lista_padrao();
+                carregar_lista_de_grupos();
                 modalCadastro.modal('hide');
             }else {
                 modalCadastro.html(data.content);
@@ -58,6 +59,7 @@
         }).done(function(data) {
             if(data.status == 302) {
                 carregar_lista_padrao();
+                carregar_lista_de_grupos();
                 modalCadastro.modal('hide');
             }else {
                 modalCadastro.html(data.content);
