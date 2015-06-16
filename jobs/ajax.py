@@ -37,9 +37,16 @@ def lista_de_tarefas(request, tipo_lista):
         if 0 in grupos_ids:
             filtro |= Q(grupo=None)
 
-    ordenacao = request.GET.get('ordenacao', 'vencimento')
+    order_by = 'vencimento'
+    ordenacao = request.GET.get('ordenacao', '')
 
-    tarefas = Tarefa.objects.filter(filtro, usuario=user).order_by(ordenacao)
+    if ordenacao == 'criacao':
+        order_by = 'created'
+
+    if ordenacao == 'titulo':
+        order_by = 'titulo'
+
+    tarefas = Tarefa.objects.filter(filtro, usuario=user).order_by(order_by)
 
     template = loader.get_template('listagem_tarefas.html')
     context = RequestContext(request, {

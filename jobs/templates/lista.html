@@ -8,8 +8,8 @@
 
     <script type="text/javascript">
 
-        var filtro = 'nao_vencidas';
         var grupos_ids = [];
+        var filtro = 'nao_vencidas';
         var ordenacao = 'vencimento';
 
         $(function() {
@@ -44,6 +44,23 @@
                 mostrar_todos_os_grupos();
             else
                 carregar_lista_padrao();
+        }
+
+        function alterar_ordenacao(nova_ordenacao) {
+            ordenacao = nova_ordenacao;
+            var texto_menu = $('#texto-dropdown-ordenacao');
+            switch (ordenacao) {
+                case 'vencimento':
+                        texto_menu.html('Data de vencimento')
+                    break;
+                case 'criacao':
+                        texto_menu.html('Data de criação')
+                    break;
+                case 'titulo':
+                        texto_menu.html('Título')
+                    break;
+            }
+            carregar_lista_padrao();
         }
 
         function mostrar_todos_os_grupos() {
