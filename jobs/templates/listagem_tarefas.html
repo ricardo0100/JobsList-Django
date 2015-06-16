@@ -9,19 +9,29 @@
 
             <div class="col-md-9">
                 <h4 class="list-group-item-heading" {% if not tarefa.vencimento %}style="margin-top: 10px" {% endif %}>
-                    {% if tarefa.grupo %}[{{ tarefa.grupo.nome|default:'Sem Grupo' }}]{% endif %}
                     {{ tarefa.titulo }}
                 </h4>
-
-                {% if tarefa.vencimento %}
-                <p class="list-group-item-text">
-                    {% if tarefa.vencida %}
-                        <strong><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ tarefa.vencimento }}</strong>
-                    {% else %}
-                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}
+                <div class="row">
+                    {% if tarefa.vencimento %}
+                        <div class="col-md-6">
+                            <p class="list-group-item-text">
+                                {% if tarefa.vencida %}
+                                    <strong><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}</strong>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}
+                                {% endif %}
+                            </p>
+                        </div>
                     {% endif %}
-                </p>
-                {% endif %}
+                    {% if tarefa.grupo %}
+                        <div class="col-md-6">
+                            <p class="list-group-item-text">
+                                <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> {{ tarefa.grupo.nome|default:'Sem Grupo' }}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+
             </div>
 
             <div class="col-md-3 tarefas-actions">
