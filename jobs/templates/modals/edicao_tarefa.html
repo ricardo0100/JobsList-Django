@@ -34,7 +34,7 @@
             method: 'POST'
         }).done(function(data) {
             if(data.status == 302) {
-                carregar_lista_de_grupos();
+                carregar_lista_padrao();
                 modalCadastro.modal('hide');
             }else {
                 modalCadastro.html(data.content);
@@ -57,7 +57,7 @@
             method: 'POST'
         }).done(function(data) {
             if(data.status == 302) {
-                carregar_lista_de_grupos();
+                carregar_lista_padrao();
                 modalCadastro.modal('hide');
             }else {
                 modalCadastro.html(data.content);
@@ -96,6 +96,11 @@
                             <label for="{{ form.vencimento.label }}">{{ form.vencimento.label }}</label>
                             {{ form.vencimento|add_class:"form-control" }}
                             {{ form.vencimento.errors|safe }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.grupo.label }}">{{ form.grupo.label }}</label>
+                            {{ form.grupo|add_class:"form-control" }}
+                            {{ form.grupo.errors|safe }}
                         </div>
                         <div id="alarmes">
 

@@ -49,26 +49,35 @@ def lista_de_tarefas(request, tipo_lista):
 @ajax
 @login_required(login_url='/login')
 def nova_tarefa(request, id_tarefa=None):
+    user = request.user
+
     tarefa = None
-    form = NovaTarefaForm()
+    form = NovaTarefaForm(user)
 
     if id_tarefa:
-        tarefa = Tarefa.objects.get(id=id_tarefa, usuario=request.user)
+        tarefa = Tarefa.objects.get(id=id_tarefa, usuario=user)
 
         if not request.method == 'POST':
-            form = NovaTarefaForm(initial={
+            form = NovaTarefaForm(user, tarefa.grupo_id, initial={
                 'titulo': tarefa.titulo,
                 'descricao': tarefa.descricao,
-                'vencimento': tarefa.vencimento,
+                'vencimento': tarefa.vencimento
             })
 
     if request.method == 'POST':
-        form = NovaTarefaForm(request.POST)
+        grupo_id = tarefa.grupo_id if tarefa else None
+        form = NovaTarefaForm(user, grupo_id, request.POST)
 
         if form.is_valid():
             titulo = form.cleaned_data['titulo']
             descricao = form.cleaned_data['descricao']
             vencimento = form.cleaned_data['vencimento']
+            grupo_id = int(form.cleaned_data['grupo'])
+
+            if grupo_id == 0:
+                grupo = None
+            else:
+                grupo = Grupo.objects.get(id=grupo_id, usuario=user)
 
             if not tarefa:
                 tarefa = Tarefa()
@@ -77,6 +86,7 @@ def nova_tarefa(request, id_tarefa=None):
             tarefa.titulo = titulo
             tarefa.descricao = descricao
             tarefa.vencimento = vencimento
+            tarefa.grupo = grupo
 
             tarefa.save()
             return redirect('/')

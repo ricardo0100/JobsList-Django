@@ -1,5 +1,6 @@
 from datetimewidget.widgets import DateTimeWidget
 from django import forms
+from jobs.models import Grupo
 from jobs.template_snippets import CustomFormErrorList
 
 
@@ -27,16 +28,21 @@ class CadastroUsuarioForm(forms.Form):
 
 
 class NovaTarefaForm(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        super(NovaTarefaForm, self).__init__(*args, **kwargs)
-        self.error_class = CustomFormErrorList
-
     titulo = forms.CharField(label='Título', error_messages={'required': 'Dê um nome para a tarefa'})
     descricao = forms.CharField(label='Descrição', widget=forms.Textarea, required=False)
     vencimento = forms.DateTimeField(label='Vencimento',
                                      widget=DateTimeWidget(usel10n=True, bootstrap_version=3),
                                      required=False)
+
+    def __init__(self, user, grupo_inicial=0, *args, **kwargs):
+        super(NovaTarefaForm, self).__init__(*args, **kwargs)
+
+        self.error_class = CustomFormErrorList
+
+        self.fields['grupo'] = forms.ChoiceField(
+            choices=[(0, '')] + [(o.id, str(o)) for o in Grupo.objects.filter(usuario=user)],
+            initial=grupo_inicial
+        )
 
 
 class NovoAlarmeForm(forms.Form):
