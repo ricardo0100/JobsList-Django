@@ -28,6 +28,7 @@ urlpatterns = [
 
 
     url(r'^ajax/lista-grupos/$', ajax.lista_grupos, name='lista_grupos'),
-    url(r'^ajax/editar-grupo/$', ajax.novo_grupo, name='edicao_de_grupo'),
+    url(r'^ajax/novo-grupo/$', ajax.novo_grupo, name='cadastro_de_grupo'),
+    url(r'^ajax/editar-grupo/(?P<id_grupo>[0-9]+)/$', ajax.novo_grupo, name='edicao_de_grupo'),
 
 ]

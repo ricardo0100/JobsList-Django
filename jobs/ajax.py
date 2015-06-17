@@ -212,17 +212,15 @@ def novo_grupo(request, id_grupo=None):
     user = request.user
     grupo = None
     form = NovoGrupoForm()
-    #
-    # if id_tarefa:
-    #     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=user)
-    #
-    #     if not request.method == 'POST':
-    #         form = NovaTarefaForm(user, tarefa.grupo_id, initial={
-    #             'titulo': tarefa.titulo,
-    #             'descricao': tarefa.descricao,
-    #             'vencimento': tarefa.vencimento
-    #         })
-    #
+
+    if id_grupo:
+        grupo = Grupo.objects.get(id=id_grupo, usuario=user)
+
+        if not request.method == 'POST':
+            form = NovoGrupoForm(initial={
+                'nome': grupo.nome
+            })
+
     if request.method == 'POST':
         form = NovoGrupoForm(request.POST)
 
@@ -239,6 +237,6 @@ def novo_grupo(request, id_grupo=None):
     template = loader.get_template('modals/edicao_grupo.html')
     context = RequestContext(request, {
         'form': form,
-        # 'tarefa': tarefa,
+        'grupo': grupo,
     })
     return HttpResponse(template.render(context))

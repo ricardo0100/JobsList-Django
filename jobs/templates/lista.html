@@ -23,27 +23,47 @@
             carregar_lista_padrao();
         }
 
-        function alterar_visibilidade_do_grupo(grupo_id) {
+        var modoEdicarGrupo = false;
+        function edicaoGrupos() {
+            var buttonEdicao = $('#modo-edicao-grupo-button');
+            var buttonNovoGrupo = $('#novo-grupo-buttton');
+
+            if(modoEdicarGrupo == false) {
+                modoEdicarGrupo = true;
+                buttonNovoGrupo.hide();
+                buttonEdicao.html('Concluir');
+            } else {
+                modoEdicarGrupo = false;
+                buttonNovoGrupo.show();
+                buttonEdicao.html('Editar grupos');
+            }
+        }
+
+        function acaoClickGrupo(grupo_id) {
             var botao = $('#botao-grupo-id-' + grupo_id);
 
-            if(botao.hasClass('active')) {
-                botao.removeClass('active');
-                var index = grupos_ids.indexOf(grupo_id);
+            if(modoEdicarGrupo == false) {
+                if (botao.hasClass('active')) {
+                    botao.removeClass('active');
+                    var index = grupos_ids.indexOf(grupo_id);
 
-                if (index > -1) {
-                    grupos_ids.splice(index, 1);
+                    if (index > -1) {
+                        grupos_ids.splice(index, 1);
+                    }
+                } else {
+                    botao.addClass('active');
+                    grupos_ids.push(grupo_id);
+                    var botao_todos = $('#botao-grupo-id-todos');
+                    botao_todos.removeClass('active');
                 }
-            }else {
-                botao.addClass('active');
-                grupos_ids.push(grupo_id);
-                var botao_todos = $('#botao-grupo-id-todos');
-                botao_todos.removeClass('active');
-            }
 
-            if(grupos_ids.length == 0)
-                mostrar_todos_os_grupos();
-            else
-                carregar_lista_padrao();
+                if (grupos_ids.length == 0)
+                    mostrar_todos_os_grupos();
+                else
+                    carregar_lista_padrao();
+            } else {
+                modalEdicaoGrupo(grupo_id);
+            }
         }
 
         function alterar_ordenacao(nova_ordenacao) {
@@ -148,8 +168,6 @@
             carregar_lista_de_tarefas_de_url(url);
         }
 
-
-
         function modal_nova_tarefa() {
             var url = '{% url 'cadastro_de_tarefa' %}';
 
@@ -230,9 +248,22 @@
             });
         }
 
-        function abrirNovoGrupo() {
+        function modalNovoGrupo() {
             var modal = $('#modal');
-            var url = '{% url 'edicao_de_grupo' %}';
+            var url = '{% url 'cadastro_de_grupo' %}';
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                modal.html(data.content);
+                modal.modal('show');
+            });
+        }
+
+        function modalEdicaoGrupo(id_grupo) {
+            var modal = $('#modal');
+            var url = '{% url 'edicao_de_grupo' 0 %}';
+            url = url.replace('/0/', '/' + id_grupo + '/');
+
             $.ajax({
                 url: url
             }).done(function(data) {
@@ -263,7 +294,8 @@
 
                     </div>
                     <div id="novo-grupo-area">
-                        <button id="novo-grupo-buttton" onclick="abrirNovoGrupo()" class="btn btn-primary">Novo grupo</button>
+                        <button id="novo-grupo-buttton" onclick="modalNovoGrupo()" class="btn btn-primary">Novo grupo</button>
+                        <button id="modo-edicao-grupo-button" onclick="edicaoGrupos()" class="btn btn-default">Editar grupos</button>
                     </div>
                 </div>
             </div>

@@ -7,7 +7,7 @@
 <script type="text/javascript">
 
     function salvarNovoGrupo() {
-        var url = '{% url 'edicao_de_grupo' %}';
+        var url = '{% url 'cadastro_de_grupo' %}';
         var data = $('#form-novo-grupo').serialize();
         var modal = $('#modal');
 
@@ -20,6 +20,32 @@
                 modal.modal('hide');
                 carregar_lista_padrao();
                 carregar_lista_de_grupos();
+            } else {
+                modal.html(data.content);
+            }
+        });
+    }
+
+    function salvarGrupo() {
+        {% if grupo %}
+            var url = '{% url 'edicao_de_grupo' grupo.id %}';
+        {% else %}
+            var url = '{% url 'cadastro_de_grupo' %}';
+        {% endif %}
+
+        var data = $('#form-novo-grupo').serialize();
+        var modal = $('#modal');
+
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'POST'
+        }).done(function(data) {
+            if(data.status == 302){
+                modal.modal('hide');
+                carregar_lista_padrao();
+                carregar_lista_de_grupos();
+                $('#modo-edicao-grupo-button').click();
             } else {
                 modal.html(data.content);
             }

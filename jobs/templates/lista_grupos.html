@@ -4,6 +4,15 @@
 
 {{ form.media }}
 
+<script type="application/javascript">
+    $(function(){
+        $('.btn-click').click(function(event) {
+            event.stopPropagation();
+            alert('hey');
+        });
+    });
+</script>
+
 <div class="list-group">
     <a id="botao-grupo-id-todos" href="javascript:mostrar_todos_os_grupos(0)" class="list-group-item active">
         Todos
@@ -13,7 +22,7 @@
     </a>
 
     {% for grupo in grupos %}
-    <a id="botao-grupo-id-{{ grupo.id }}" href="javascript:alterar_visibilidade_do_grupo({{ grupo.id }})" class="list-group-item">
+    <a id="botao-grupo-id-{{ grupo.id }}" href="javascript:acaoClickGrupo({{ grupo.id }})" class="list-group-item">
         <span class="badge">{{ grupo.quantidade_pendentes }}</span>
         {{ grupo.nome }}
     </a>
