@@ -52,3 +52,8 @@ class NovoAlarmeForm(forms.Form):
 
 class NovoGrupoForm(forms.Form):
     nome = forms.CharField(label='Nome', error_messages={'required': 'Informe o nome do grupo'})
+
+    def __init__(self,  *args, **kwargs):
+        super(NovoGrupoForm, self).__init__(*args, **kwargs)
+
+        self.error_class = CustomFormErrorList
