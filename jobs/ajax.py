@@ -240,3 +240,20 @@ def novo_grupo(request, id_grupo=None):
         'grupo': grupo,
     })
     return HttpResponse(template.render(context))
+
+@ajax
+@login_required(login_url='/login')
+def excluir_grupo(request):
+    if request.method == 'POST':
+        id_grupo = request.POST['id_grupo']
+        grupo = Grupo.objects.get(id=id_grupo, usuario=request.user)
+        grupo.delete()
+        return redirect('/')
+    else:
+        id_grupo = request.GET['id_grupo']
+        grupo = Grupo.objects.get(id=id_grupo, usuario=request.user)
+        template = loader.get_template('modals/excluir_grupo.html')
+        context = RequestContext(request, {
+            'grupo': grupo
+        })
+        return HttpResponse(template.render(context))

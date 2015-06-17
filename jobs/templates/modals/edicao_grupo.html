@@ -52,6 +52,20 @@
         });
     }
 
+    function modal_excluir_grupo(id_grupo) {
+            var url = '{% url 'exclusao_grupo' %}';
+            var modalConfirmacaoExclusaoGrupo = $('#modal2');
+            var data = { 'id_grupo': id_grupo };
+
+            $.ajax({
+                url: url,
+                data: data
+            }).done(function(data) {
+                modalConfirmacaoExclusaoGrupo.html(data.content);
+                modalConfirmacaoExclusaoGrupo.modal('show');
+            });
+        }
+
 </script>
 
 <div class="modal-dialog">
@@ -70,11 +84,16 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             {% if grupo %}
-            <button type="button" class="btn btn-primary" onclick="salvarGrupo()">Salvar</button>
+                <button type="button" class="btn btn-danger" onclick="modal_excluir_grupo({{ grupo.id }})">Excluir</button>
+            {% endif %}
+
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+            {% if grupo %}
+                <button type="button" class="btn btn-primary" onclick="salvarGrupo()">Salvar</button>
             {% else %}
-            <button type="button" class="btn btn-primary" onclick="salvarNovoGrupo()">Criar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarNovoGrupo()">Criar</button>
             {% endif %}
         </div>
     </div>
