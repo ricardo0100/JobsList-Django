@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.template import loader
 from django.template import RequestContext
 from django_ajax.decorators import ajax
-from jobs.forms import NovaTarefaForm, NovoAlarmeForm
+from jobs.forms import NovaTarefaForm, NovoAlarmeForm, NovoGrupoForm
 from jobs.models import Tarefa, Alarme, Grupo
 from django.utils import timezone
 
@@ -90,7 +90,7 @@ def nova_tarefa(request, id_tarefa=None):
 
             if not tarefa:
                 tarefa = Tarefa()
-                tarefa.usuario = request.user
+                tarefa.usuario = user
 
             tarefa.titulo = titulo
             tarefa.descricao = descricao
@@ -203,5 +203,42 @@ def lista_grupos(request):
     template = loader.get_template('lista_grupos.html')
     context = RequestContext(request, {
         'grupos': grupos
+    })
+    return HttpResponse(template.render(context))
+
+@ajax
+@login_required(login_url='/login')
+def novo_grupo(request, id_grupo=None):
+    user = request.user
+    grupo = None
+    form = NovoGrupoForm()
+    #
+    # if id_tarefa:
+    #     tarefa = Tarefa.objects.get(id=id_tarefa, usuario=user)
+    #
+    #     if not request.method == 'POST':
+    #         form = NovaTarefaForm(user, tarefa.grupo_id, initial={
+    #             'titulo': tarefa.titulo,
+    #             'descricao': tarefa.descricao,
+    #             'vencimento': tarefa.vencimento
+    #         })
+    #
+    if request.method == 'POST':
+        form = NovoGrupoForm(request.POST)
+
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+            if not grupo:
+                grupo = Grupo()
+                grupo.usuario = user
+
+            grupo.nome = nome
+            grupo.save()
+            return redirect('/')
+
+    template = loader.get_template('modals/edicao_grupo.html')
+    context = RequestContext(request, {
+        'form': form,
+        # 'tarefa': tarefa,
     })
     return HttpResponse(template.render(context))

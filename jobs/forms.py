@@ -48,3 +48,7 @@ class NovaTarefaForm(forms.Form):
 class NovoAlarmeForm(forms.Form):
     horario = forms.DateTimeField(label='Horário',
                                   widget=DateTimeWidget(usel10n=True, bootstrap_version=3))
+
+
+class NovoGrupoForm(forms.Form):
+    nome = forms.CharField(label='Nome', error_messages={'required': 'Informe o nome do grupo'})

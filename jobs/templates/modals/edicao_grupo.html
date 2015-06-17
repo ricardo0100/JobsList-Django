@@ -1,0 +1,55 @@
+{% load widget_tweaks %}
+
+{% load custom_filters %}
+
+{{ form.media }}
+
+<script type="text/javascript">
+
+    function salvarNovoGrupo() {
+        var url = '{% url 'edicao_de_grupo' %}';
+        var data = $('#form-novo-grupo').serialize();
+        var modal = $('#modal');
+
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'POST'
+        }).done(function(data) {
+            if(data.status == 302){
+                modal.modal('hide');
+                carregar_lista_padrao();
+                carregar_lista_de_grupos();
+            } else {
+                modal.html(data.content);
+            }
+        });
+    }
+
+</script>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Novo Grupo de tarefas</h4>
+        </div>
+        <div class="modal-body">
+            <form id="form-novo-grupo" class="form-horizontal">
+                <div class="form-group">
+                    <label for="{{ form.nome.label }}">{{ form.nome.label }}</label>
+                    {{ form.nome|add_class:"form-control" }}
+                    {{ form.nome.errors|safe }}
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            {% if grupo %}
+            <button type="button" class="btn btn-primary" onclick="salvarGrupo()">Salvar</button>
+            {% else %}
+            <button type="button" class="btn btn-primary" onclick="salvarNovoGrupo()">Criar</button>
+            {% endif %}
+        </div>
+    </div>
+</div>

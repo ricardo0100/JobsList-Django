@@ -229,6 +229,24 @@
                 }
             });
         }
+
+        function abrirNovoGrupo() {
+            var modal = $('#modal');
+            var url = '{% url 'edicao_de_grupo' %}';
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                modal.html(data.content);
+                modal.modal('show');
+            });
+        }
+
+        function salvarNovoGrupo() {
+            var nome_novo_grupo = $('#nome-novo-grupo').val();
+            $('#modal-novo-grupo').modal('hide');
+            carregar_lista_padrao();
+            carregar_lista_de_grupos();
+        }
     </script>
 {% endblock %}
 
@@ -243,6 +261,9 @@
                     </div>
                     <div id="lista-de-grupos" class="panel-body">
 
+                    </div>
+                    <div id="novo-grupo-area">
+                        <button id="novo-grupo-buttton" onclick="abrirNovoGrupo()" class="btn btn-primary">Novo grupo</button>
                     </div>
                 </div>
             </div>
@@ -266,4 +287,5 @@
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 
     </div>
+
 {% endblock %}
