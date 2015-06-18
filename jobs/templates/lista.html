@@ -26,20 +26,26 @@
         var modoEdicarGrupo = false;
         function edicaoGrupos() {
             var buttonEdicao = $('#modo-edicao-grupo-button');
+            var txtHelp = $('#help-text-editar-grupo');
             var buttonNovoGrupo = $('#novo-grupo-buttton');
 
             if(modoEdicarGrupo == false) {
                 modoEdicarGrupo = true;
                 buttonNovoGrupo.hide();
+                txtHelp.show();
                 buttonEdicao.html('Concluir');
             } else {
                 modoEdicarGrupo = false;
                 buttonNovoGrupo.show();
+                txtHelp.hide();
                 buttonEdicao.html('Editar grupos');
             }
         }
 
         function acaoClickGrupo(grupo_id) {
+            if(grupo_id == 0)
+                return;
+
             var botao = $('#botao-grupo-id-' + grupo_id);
 
             if(modoEdicarGrupo == false) {
@@ -296,6 +302,7 @@
                     <div id="novo-grupo-area">
                         <button id="novo-grupo-buttton" onclick="modalNovoGrupo()" class="btn btn-primary">Novo grupo</button>
                         <button id="modo-edicao-grupo-button" onclick="edicaoGrupos()" class="btn btn-default">Editar grupos</button>
+                        <p id="help-text-editar-grupo" class="text-center" style="display: none">Clique em um grupo para editá-lo</p>
                     </div>
                 </div>
             </div>
