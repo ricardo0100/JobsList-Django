@@ -30,9 +30,9 @@ SECRET_KEY = 'ezlc#4h1@**j6qzt%_62ff=qblti^)o-5@ghr_)vwea(y1&+j^'
 if socket.gethostname() == 'MacBook-Air-de-Ricardo.local':
     DEBUG = True
 else:
-    DEBUG = True #TODO
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'otes02.herokuapp.com']
 
 
 # Application definition
