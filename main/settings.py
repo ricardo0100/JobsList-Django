@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'jobs',
     'django_ajax',
     'datetimewidget',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -118,6 +119,15 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',),
+    'PAGE_SIZE': 10
+}
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

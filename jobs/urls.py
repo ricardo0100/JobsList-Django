@@ -1,9 +1,17 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from rest_framework import routers
 
 from . import views
+from . import rest
 from jobs import ajax
 
+router = routers.DefaultRouter()
+router.register(r'tarefas', rest.TarefaViewSet)
+router.register(r'grupos', rest.GrupoViewSet)
+router.register(r'alarmes', rest.AlarmeViewSet)
+
 urlpatterns = [
+    url(r'^api-rest/', include(router.urls)),
     url(r'^$', views.home, name='home'),
     url(r'^cadastro/', views.cadastro, name='cadastro'),
     url(r'^login/', views.login, name='login'),
