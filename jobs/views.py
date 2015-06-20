@@ -6,15 +6,12 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import RequestContext, loader
 from jobs.forms import LoginForm, CadastroUsuarioForm
-from jobs.models import Tarefa
+from jobs.models import Tarefa, Grupo
 
 
 def home(request):
-    form = LoginForm()
     template = loader.get_template('home.html')
-    context = RequestContext(request, {
-        'form': form
-    })
+    context = RequestContext(request)
     return HttpResponse(template.render(context))
 
 def login(request, mostrar_mensagem_logout=False):

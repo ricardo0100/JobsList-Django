@@ -30,3 +30,92 @@ Framework web em python
 Framework front-end (CSS e JS)
 
 
+---
+
+
+##Instalação do Ambiente de Desenvolvimento no Mac OSX##
+
+**Pré requisitos**
+
+-Xcode
+
+
+**HomeBrew**
+
+```
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+**Python**
+```
+brew install python
+brew install python3
+```
+
+**Virtual Env**
+
+```
+pip install virtualenv
+pip install virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
+mkvirtualenv otes02 --python=/usr/local/bin/python3
+```
+
+**PostgreSQL**
+
+```
+PYTHON=/usr/local/bin/python brew install postgresql
+initdb -A trust /usr/local/var/postgres
+initdb /usr/local/var/postgres -E utf8
+```
+
+Trocar a versão do PostgreSQL para a instalada
+```
+mkdir -p ~/Library/LaunchAgents
+cp /usr/local/Cellar/postgresql/9.1.4/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+
+```
+
+Criar database
+```
+createdb otes02
+```
+
+**Requirements**
+```
+pip install -r requirements.txt
+```
+
+Configurar a variável de ambiente DATABASE_URL=postgres://user:password@localhost:5432/otes02
+
+```
+python manage.py syncdb
+```
+
+**RabitMQ para o Celery**
+```
+brew install rabbitmq
+PATH=$PATH:/usr/local/sbin
+```
+
+```
+sudo rabbitmq-server -detached
+sudo rabbitmqctl status
+sudo rabbitmqctl stop
+```
+
+```
+export GMAIL_HOST_USER=email
+export GMAIL_HOST_PASSWORD=senha
+export DJANGO_SETTINGS_MODULE=main.settings
+
+celery -A tasks worker --loglevel=info
+```
+[Celery no Heroku](https://devcenter.heroku.com/articles/one-off-dynos#one-off-dyno-execution-syntax)
+
+Configurar o Broker do Celery
+```
+export RABBITMQ_BIGWIG_RX_URL=url
+export RABBITMQ_BIGWIG_TX_URL=url
+```

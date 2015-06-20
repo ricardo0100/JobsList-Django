@@ -7,6 +7,8 @@ from jobs import ajax
 
 router = routers.DefaultRouter()
 router.register(r'tarefas', rest.TarefaViewSet)
+router.register(r'grupos', rest.GrupoViewSet)
+router.register(r'alarmes', rest.AlarmeViewSet)
 
 urlpatterns = [
     url(r'^api-rest/', include(router.urls)),
@@ -31,4 +33,10 @@ urlpatterns = [
     url(r'^ajax/lista-alarmes/(?P<id_tarefa>[0-9]+)/$', ajax.lista_alarmes, name='lista_alarmes'),
     url(r'^ajax/salvar-novo-alarme/(?P<id_tarefa>[0-9]+)/$', ajax.salvar_novo_alarme, name='salvar_novo_alarme'),
     url(r'^ajax/excluir-alarme/(?P<id_alarme>[0-9]+)/$', ajax.excluir_alarme, name='excluir_alarme'),
+
+
+    url(r'^ajax/lista-grupos/$', ajax.lista_grupos, name='lista_grupos'),
+    url(r'^ajax/novo-grupo/$', ajax.novo_grupo, name='cadastro_de_grupo'),
+    url(r'^ajax/editar-grupo/(?P<id_grupo>[0-9]+)/$', ajax.novo_grupo, name='edicao_de_grupo'),
+    url(r'^ajax/exclusao-grupo/', ajax.excluir_grupo, name='exclusao_grupo'),
 ]

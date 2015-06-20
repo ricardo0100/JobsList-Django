@@ -6,22 +6,35 @@
 
     <div class="list-group-item {% if tarefa.exibir_como_vencida %}list-group-item-danger{% endif %} {% if tarefa.concluida %}list-group-item-success{% endif %}" id="tarefa_{{ tarefa.id }}" data-concluida="{{ tarefa.concluida }}" data-vencida="{{ tarefa.vencida }}">
         <div class="row">
+
             <div class="col-md-9">
                 <h4 class="list-group-item-heading" {% if not tarefa.vencimento %}style="margin-top: 10px" {% endif %}>
                     {{ tarefa.titulo }}
                 </h4>
-                {% if tarefa.vencimento %}
-                <p class="list-group-item-text">
-                    {% if tarefa.vencida %}
-                        <strong><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ tarefa.vencimento }}</strong>
-                    {% else %}
-                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}
+                <div class="row">
+                    {% if tarefa.vencimento %}
+                        <div class="col-md-6">
+                            <p class="list-group-item-text">
+                                {% if tarefa.vencida %}
+                                    <strong><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}</strong>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ tarefa.vencimento }}
+                                {% endif %}
+                            </p>
+                        </div>
                     {% endif %}
-                </p>
-                {% endif %}
-            </div>
-            <div class="col-md-3 tarefas-actions">
+                    {% if tarefa.grupo %}
+                        <div class="col-md-6">
+                            <p class="list-group-item-text">
+                                <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> {{ tarefa.grupo.nome|default:'Sem Grupo' }}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
 
+            </div>
+
+            <div class="col-md-3 tarefas-actions">
                 <button type="button" class="btn btn-default pull-right btn-concluida {% if tarefa.concluida %}btn-success{% endif %}" aria-label="Marcar como concluida" onclick="marcar_concluida(this)">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
@@ -33,8 +46,8 @@
                 <button type="button" class="btn btn-default pull-right" aria-label="Editar" onclick="modal_editar_tarefa({{ tarefa.id }})">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 </button>
-
             </div>
+
         </div>
 
     </div>
@@ -52,7 +65,7 @@
             <span class="glyphicon glyphicon-queen text-primary" aria-hidden="true"></span>
         </h1>
 
-        <h3 class="text-muted">Você não possui tarefas (:</h3>
+        <h3 class="text-muted">Nenhuma tarefa</h3>
 
         <button class="btn btn-lg btn-primary" onclick="modal_nova_tarefa()">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cria nova tarefa

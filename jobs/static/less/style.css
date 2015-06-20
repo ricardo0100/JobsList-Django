@@ -44,7 +44,6 @@
   margin: auto;
   text-align: center;
   z-index: 1;
-  position: absolute;
 }
 #loading-gif img {
   margin-top: 100px;
@@ -131,4 +130,11 @@ body {
 }
 #popover_form_nova_tarefa button {
   margin: 10px 0 10px 10px;
+}
+#form-novo-grupo {
+  padding: 0 20px;
+}
+#novo-grupo-area button {
+  margin-left: 15px;
+  margin-bottom: 10px;
 }

@@ -2,6 +2,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 
@@ -15,9 +16,25 @@ class ModelBase(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.created = datetime.datetime.today()
-        self.modified = datetime.datetime.today()
+            self.created = timezone.now()
+        self.modified = timezone.now()
         return super(ModelBase, self).save(*args, **kwargs)
+
+
+class Grupo(ModelBase):
+    def __str__(self):
+        return self.nome
+
+    nome = models.CharField(max_length=100)
+
+    @property
+    def quantidade_pendentes(self):
+        filtro = Q(Q(concluida=False) | Q(vencimento__lt=timezone.now(), concluida=False))
+        filtro &= Q(grupo=self)
+
+        count = Tarefa.objects.filter(filtro).count()
+
+        return count
 
 
 class Tarefa(ModelBase):
@@ -28,6 +45,8 @@ class Tarefa(ModelBase):
     descricao = models.TextField()
     vencimento = models.DateTimeField(null=True)
     concluida = models.BooleanField(default=False)
+
+    grupo = models.ForeignKey(Grupo, null=True)
 
     @property
     def vencida(self):

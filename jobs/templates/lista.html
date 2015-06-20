@@ -8,31 +8,120 @@
 
     <script type="text/javascript">
 
+        var grupos_ids = [];
+        var filtro = 'nao_vencidas';
+        var ordenacao = 'vencimento';
+
         $(function() {
             carregar_lista_padrao();
+            carregar_lista_de_grupos();
         });
 
-        var lista_padrao = 'nao_vencidas';
-
-        function alterar_listagem_padrao(nova_lista_padrao) {
+        function alterar_listagem_padrao(novo_filtro) {
             $('#nav-menu').find('.active').removeClass('active');
-            lista_padrao = nova_lista_padrao;
+            filtro = novo_filtro;
             carregar_lista_padrao();
         }
 
+        var modoEdicarGrupo = false;
+        function edicaoGrupos() {
+            var buttonEdicao = $('#modo-edicao-grupo-button');
+            var txtHelp = $('#help-text-editar-grupo');
+            var buttonNovoGrupo = $('#novo-grupo-buttton');
+
+            if(modoEdicarGrupo == false) {
+                modoEdicarGrupo = true;
+                buttonNovoGrupo.hide();
+                txtHelp.show();
+                buttonEdicao.html('Concluir');
+            } else {
+                modoEdicarGrupo = false;
+                buttonNovoGrupo.show();
+                txtHelp.hide();
+                buttonEdicao.html('Editar grupos');
+            }
+        }
+
+        function acaoClickGrupo(grupo_id) {
+            if(grupo_id == 0)
+                return;
+
+            var botao = $('#botao-grupo-id-' + grupo_id);
+
+            if(modoEdicarGrupo == false) {
+                if (botao.hasClass('active')) {
+                    botao.removeClass('active');
+                    var index = grupos_ids.indexOf(grupo_id);
+
+                    if (index > -1) {
+                        grupos_ids.splice(index, 1);
+                    }
+                } else {
+                    botao.addClass('active');
+                    grupos_ids.push(grupo_id);
+                    var botao_todos = $('#botao-grupo-id-todos');
+                    botao_todos.removeClass('active');
+                }
+
+                if (grupos_ids.length == 0)
+                    mostrar_todos_os_grupos();
+                else
+                    carregar_lista_padrao();
+            } else {
+                modalEdicaoGrupo(grupo_id);
+            }
+        }
+
+        function alterar_ordenacao(nova_ordenacao) {
+            ordenacao = nova_ordenacao;
+            var texto_menu = $('#texto-dropdown-ordenacao');
+            switch (ordenacao) {
+                case 'vencimento':
+                        texto_menu.html('Data de vencimento')
+                    break;
+                case 'criacao':
+                        texto_menu.html('Data de criação')
+                    break;
+                case 'titulo':
+                        texto_menu.html('Título')
+                    break;
+            }
+            carregar_lista_padrao();
+        }
+
+        function mostrar_todos_os_grupos() {
+            var botao = $('#botao-grupo-id-todos');
+
+            grupos_ids = [];
+            $('#lista-de-grupos').find('.list-group-item').removeClass('active');
+            botao.addClass('active');
+
+            carregar_lista_padrao();
+        }
+
+        function carregar_lista_de_grupos() {
+            var url = '{% url 'lista_grupos' %}';
+
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                $('#lista-de-grupos').html(data.content);
+            });
+        }
+
         function carregar_lista_padrao() {
-            if(lista_padrao == 'todas') {
+            if(filtro == 'todas') {
                 $('#menu-todas').addClass('active');
                 carregar_lista_de_todas_as_tarefas();
             }
-            else if(lista_padrao == 'nao_vencidas') {
+            else if(filtro == 'nao_vencidas') {
                 $('#menu-pendentes').addClass('active');
                 carregar_lista_nao_vencidas();
             }
-            else if(lista_padrao == 'hoje'){
+            else if(filtro == 'hoje'){
                 $('#menu-hoje').addClass('active');
                 carregar_lista_para_hoje();
-            }else if(lista_padrao == 'concluidas'){
+            }else if(filtro == 'concluidas'){
                 $('#menu-concluidas').addClass('active');
                 carregar_lista_concluidas();
             }
@@ -51,8 +140,14 @@
             div_lista_de_tarefas.html('');
             mostrar_loading_gif();
 
+            var data = {
+                'grupos_ids': grupos_ids,
+                'ordenacao': ordenacao
+            };
+
             $.ajax({
-                url: url
+                url: url,
+                data: data
             }).done(function(data) {
                 esconder_loading_gif();
                 div_lista_de_tarefas.html(data.content);
@@ -78,8 +173,6 @@
             var url = '{% url 'lista_concluidas' %}';
             carregar_lista_de_tarefas_de_url(url);
         }
-
-
 
         function modal_nova_tarefa() {
             var url = '{% url 'cadastro_de_tarefa' %}';
@@ -160,6 +253,37 @@
                 }
             });
         }
+
+        function modalNovoGrupo() {
+            var modal = $('#modal');
+            var url = '{% url 'cadastro_de_grupo' %}';
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                modal.html(data.content);
+                modal.modal('show');
+            });
+        }
+
+        function modalEdicaoGrupo(id_grupo) {
+            var modal = $('#modal');
+            var url = '{% url 'edicao_de_grupo' 0 %}';
+            url = url.replace('/0/', '/' + id_grupo + '/');
+
+            $.ajax({
+                url: url
+            }).done(function(data) {
+                modal.html(data.content);
+                modal.modal('show');
+            });
+        }
+
+        function salvarNovoGrupo() {
+            var nome_novo_grupo = $('#nome-novo-grupo').val();
+            $('#modal-novo-grupo').modal('hide');
+            carregar_lista_padrao();
+            carregar_lista_de_grupos();
+        }
     </script>
 {% endblock %}
 
@@ -167,16 +291,39 @@
     <div id="tarefas">
         <div class="row">
 
-            <div id="loading-gif" class="col-md-12">
-                <img src="{% static 'imagens/loading.gif' %}">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Grupos</h3>
+                    </div>
+                    <div id="lista-de-grupos" class="panel-body">
+
+                    </div>
+                    <div id="novo-grupo-area">
+                        <button id="novo-grupo-buttton" onclick="modalNovoGrupo()" class="btn btn-primary">Novo grupo</button>
+                        <button id="modo-edicao-grupo-button" onclick="edicaoGrupos()" class="btn btn-default">Editar grupos</button>
+                        <p id="help-text-editar-grupo" class="text-center" style="display: none">Clique em um grupo para editá-lo</p>
+                    </div>
+                </div>
             </div>
 
-            <div id="lista-de-tarefas" class="col-md-12"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="loading-gif">
+                            <img src="{% static 'imagens/loading.gif' %}">
+                        </div>
+                        <div id="lista-de-tarefas">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
 
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true"></div>
+    <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true"></div>
 
-    </div>
 {% endblock %}

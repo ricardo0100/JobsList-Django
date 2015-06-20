@@ -1,9 +1,10 @@
 <script type="text/javascript">
-    function excluir_tarefa(id_tarefa) {
-        var url = '{% url 'excluir_tarefa' %}';
-        var modalConfirmacaoExclusaoTarefa = $('#modal');
+    function excluir_grupo(id_grupo) {
+        var url = '{% url 'exclusao_grupo' %}';
+        var modalEdicaoGrupo = $('#modal');
+        var modalConfirmacaoExclusaoGrupo = $('#modal2');
         var data = {
-            'id_tarefa': id_tarefa
+            'id_grupo': id_grupo
         };
 
         $.ajax({
@@ -14,11 +15,14 @@
             if(data.status == 302) {
                 carregar_lista_padrao();
                 carregar_lista_de_grupos();
-                modalConfirmacaoExclusaoTarefa.modal('hide');
+                modalConfirmacaoExclusaoGrupo.modal('hide');
+                modalEdicaoGrupo.modal('hide');
+                $('#modo-edicao-grupo-button').click();
             }
         });
     }
 </script>
+
 <div class="modal-dialog">
     <div class="modal-content">
 
@@ -28,13 +32,13 @@
         </div>
 
         <div class="modal-body">
-            <p>Tem certeza que deseja exluir a tarefa?</p>
+            <p>Tem certeza que deseja exluir o grupo?</p>
             <p class="text-muted">{{ tarefa.titulo }}</p>
         </div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-default btn-danger" onclick="excluir_tarefa({{ tarefa.id }})">Excluir</button>
+            <button type="button" class="btn btn-default btn-danger" onclick="excluir_grupo({{ grupo.id }})">Excluir</button>
         </div>
 
     </div>

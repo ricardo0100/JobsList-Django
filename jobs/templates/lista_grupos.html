@@ -1,0 +1,21 @@
+{% load widget_tweaks %}
+
+{% load custom_filters %}
+
+{{ form.media }}
+
+<div class="list-group">
+    <a id="botao-grupo-id-todos" href="javascript:mostrar_todos_os_grupos(0)" class="list-group-item active">
+        Todos
+    </a>
+    <a id="botao-grupo-id-0" href="javascript:acaoClickGrupo(0)" class="list-group-item">
+        Sem Grupo
+    </a>
+
+    {% for grupo in grupos %}
+    <a id="botao-grupo-id-{{ grupo.id }}" href="javascript:acaoClickGrupo({{ grupo.id }})" class="list-group-item">
+        <span class="badge">{{ grupo.quantidade_pendentes }}</span>
+        {{ grupo.nome }}
+    </a>
+    {% endfor %}
+</div>

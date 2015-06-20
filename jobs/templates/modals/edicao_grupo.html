@@ -1,0 +1,100 @@
+{% load widget_tweaks %}
+
+{% load custom_filters %}
+
+{{ form.media }}
+
+<script type="text/javascript">
+
+    function salvarNovoGrupo() {
+        var url = '{% url 'cadastro_de_grupo' %}';
+        var data = $('#form-novo-grupo').serialize();
+        var modal = $('#modal');
+
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'POST'
+        }).done(function(data) {
+            if(data.status == 302){
+                modal.modal('hide');
+                carregar_lista_padrao();
+                carregar_lista_de_grupos();
+            } else {
+                modal.html(data.content);
+            }
+        });
+    }
+
+    function salvarGrupo() {
+        {% if grupo %}
+            var url = '{% url 'edicao_de_grupo' grupo.id %}';
+        {% else %}
+            var url = '{% url 'cadastro_de_grupo' %}';
+        {% endif %}
+
+        var data = $('#form-novo-grupo').serialize();
+        var modal = $('#modal');
+
+        $.ajax({
+            url: url,
+            data: data,
+            method: 'POST'
+        }).done(function(data) {
+            if(data.status == 302){
+                modal.modal('hide');
+                carregar_lista_padrao();
+                carregar_lista_de_grupos();
+                $('#modo-edicao-grupo-button').click();
+            } else {
+                modal.html(data.content);
+            }
+        });
+    }
+
+    function modal_excluir_grupo(id_grupo) {
+            var url = '{% url 'exclusao_grupo' %}';
+            var modalConfirmacaoExclusaoGrupo = $('#modal2');
+            var data = { 'id_grupo': id_grupo };
+
+            $.ajax({
+                url: url,
+                data: data
+            }).done(function(data) {
+                modalConfirmacaoExclusaoGrupo.html(data.content);
+                modalConfirmacaoExclusaoGrupo.modal('show');
+            });
+        }
+
+</script>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Novo Grupo de tarefas</h4>
+        </div>
+        <div class="modal-body">
+            <form id="form-novo-grupo" class="form-horizontal">
+                <div class="form-group">
+                    <label for="{{ form.nome.label }}">{{ form.nome.label }}</label>
+                    {{ form.nome|add_class:"form-control" }}
+                    {{ form.nome.errors|safe }}
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            {% if grupo %}
+                <button type="button" class="btn btn-danger" onclick="modal_excluir_grupo({{ grupo.id }})">Excluir</button>
+            {% endif %}
+
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+            {% if grupo %}
+                <button type="button" class="btn btn-primary" onclick="salvarGrupo()">Salvar</button>
+            {% else %}
+                <button type="button" class="btn btn-primary" onclick="salvarNovoGrupo()">Criar</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
