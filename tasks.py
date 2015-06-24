@@ -6,4 +6,4 @@ app = Celery('tasks', broker=RABBITMQ_BIGWIG_RX_URL)
 
 @app.task
 def enviar_alarme_por_email(destinatario, assunto, mensagem):
-    send_mail(assunto, mensagem, 'ricardo0100@gmail.com', ['ricardo0100@gmail.com'], fail_silently=False)
+    send_mail(assunto, mensagem, 'ricardo0100@gmail.com', [destinatario], fail_silently=False)
