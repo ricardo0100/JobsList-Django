@@ -1,15 +1,18 @@
+from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions
 from jobs.models import Tarefa, Grupo, Alarme
 from jobs.serializers import TarefaSerializer, GrupoSerializer, AlarmeSerializer
 
 
 class TarefaViewSet(viewsets.ModelViewSet):
+
     queryset = Tarefa.objects.all()
     serializer_class = TarefaSerializer
     # permission_classes = [permissions.IsAuthenticated, ]
 
     def get_queryset(self):
-        return Tarefa.objects.filter()
+        user = User.objects.get(email='murielkong@gmail.com')
+        return Tarefa.objects.filter(usuario=user)
 
 
 class GrupoViewSet(viewsets.ModelViewSet):
