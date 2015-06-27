@@ -21,7 +21,8 @@ class GrupoViewSet(viewsets.ModelViewSet):
     # permission_classes = [permissions.IsAuthenticated, ]
 
     def get_queryset(self):
-        return Grupo.objects.filter()
+        user = User.objects.get(email='murielkong@gmail.com')
+        return Grupo.objects.filter(usuario=user)
 
 
 class AlarmeViewSet(viewsets.ModelViewSet):
@@ -30,4 +31,5 @@ class AlarmeViewSet(viewsets.ModelViewSet):
     # permission_classes = [permissions.IsAuthenticated, ]
 
     def get_queryset(self):
-        return Alarme.objects.filter()
+        user = User.objects.get(email='murielkong@gmail.com')
+        return Alarme.objects.filter(usuario=user)
